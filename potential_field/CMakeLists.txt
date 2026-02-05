@@ -10,8 +10,11 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)   #JointState
+find_package(std_srvs REQUIRED)      #Trigger service
 find_package(highlevel_interfaces REQUIRED)
 
+#a2
 add_executable(potential_field_2d src/potential_field_2d.cpp)
 ament_target_dependencies(potential_field_2d
   rclcpp
@@ -20,8 +23,22 @@ ament_target_dependencies(potential_field_2d
   highlevel_interfaces
 )
 
+#a3
+add_executable(potential_field_joint src/potential_field_joint.cpp)
+ament_target_dependencies(potential_field_joint
+  rclcpp
+  std_msgs
+  sensor_msgs
+  std_srvs
+)
+
+install(
+  DIRECTORY config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 install(TARGETS potential_field_2d
+  potential_field_joint
   DESTINATION lib/${PROJECT_NAME}
 )
 

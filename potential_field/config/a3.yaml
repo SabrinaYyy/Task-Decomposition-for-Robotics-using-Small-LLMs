@@ -1,0 +1,6 @@
+potential_field_joint:
+  ros__parameters:
+    k_att: 3.0
+    default_joint_position: [0.0, 0.6, 0.0, 0.6, 0.0, 0.6, 0.0 ]
+    maximum_joint_velocity: [1.3963, 1.3963, 1.3963, 1.3963, 1.2218, 1.2218, 1.2218]
+    done_threshold: 0.05
