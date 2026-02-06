@@ -20,13 +20,9 @@ class PotentialFieldJoint : public rclcpp::Node
 {
 public:
   PotentialFieldJoint()
-  : Node("potential_field_joint")
+  : Node("potential_field_joint") //same as in the yaml file
   {
-    // =========================
-    // Parameters (A3)
-    // =========================
-    // Declare with DEFAULTS required by assignment
-    // (If YAML provides them, they override automatically.) :contentReference[oaicite:3]{index=3} :contentReference[oaicite:4]{index=4}
+    //parameter a3(default val if no yaml)
     this->declare_parameter<double>("k_att", 5.0);
     this->declare_parameter<std::vector<double>>("maximum_joint_velocity",
       std::vector<double>{1, 1, 1, 1, 1, 1, 1});
@@ -34,18 +30,30 @@ public:
       std::vector<double>{0.0, 1.54, 0.0, 1.54, 0.0, 1.54, 0.0});
     this->declare_parameter<double>("done_threshold", 0.05);
 
-    // Read parameters once (recommended: parameters during init) :contentReference[oaicite:5]{index=5}
+    //read parameters in yaml file(only once)
     k_att_ = this->get_parameter("k_att").as_double();
 
-    auto vmax_vec = this->get_parameter("maximum_joint_velocity").as_double_array();
-    auto qdef_vec = this->get_parameter("default_joint_position").as_double_array();
+    std::vector<double> vmax_vec;
+    if (!this->get_parameter("maximum_joint_velocity", vmax_vec)) {
+      RCLCPP_WARN(this->get_logger(),
+                  "Failed to read maximum_joint_velocity, using default.");
+      vmax_vec = {1, 1, 1, 1, 1, 1, 1};
+    }
+
+    std::vector<double> qdef_vec;
+    if (!this->get_parameter("default_joint_position", qdef_vec)) {
+      RCLCPP_WARN(this->get_logger(),
+                  "Failed to read default_joint_position, using default.");
+      qdef_vec = {0.0, 1.54, 0.0, 1.54, 0.0, 1.54, 0.0};
+    }
+
 
     done_threshold_ = this->get_parameter("done_threshold").as_double();
 
-    // Validate sizes (must be 7). If wrong, fall back to defaults.
+    //validate sizes(7) if wrong,back to default
     if (vmax_vec.size() != DOF) {
       RCLCPP_WARN(this->get_logger(),
-                  "Param maximum_joint_velocity size=%zu (expected 7). Using default [1..].",
+                  "Param maximum_joint_velocity size=%zu (expected 7). Using default",
                   vmax_vec.size());
       vmax_ = {1,1,1,1,1,1,1};
     } else {
@@ -54,7 +62,7 @@ public:
 
     if (qdef_vec.size() != DOF) {
       RCLCPP_WARN(this->get_logger(),
-                  "Param default_joint_position size=%zu (expected 7). Using default.",
+                  "Param default_joint_position size=%zu (expected 7). Using default",
                   qdef_vec.size());
       q_default_ = {0.0, 1.54, 0.0, 1.54, 0.0, 1.54, 0.0};
     } else {
@@ -62,36 +70,38 @@ public:
     }
 
     RCLCPP_INFO(this->get_logger(),
-                "potential_field_joint params loaded: k_att=%.3f done_th=%.3f",
+                "potential_field_joint params loaded (katt=5 for default, katt=3 for yaml exit): k_att=%.3f done_th=%.3f",
                 k_att_, done_threshold_);
 
-    // =========================
-    // Pub/Sub/Service
-    // =========================
+  
+    //pub sub serv
+
     auto qos = rclcpp::QoS(rclcpp::KeepLast(10));
 
+    //joint states
     joint_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
       "/joint_states", qos,
       std::bind(&PotentialFieldJoint::joint_callback, this, _1));
-
+    //velocity
     joint_vel_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
       "/planner/joint_velocity", qos);
-
+    //done
     done_pub_ = this->create_publisher<std_msgs::msg::Bool>(
       "/planner/done", qos);
-
+    //
     homing_srv_ = this->create_service<std_srvs::srv::Trigger>(
       "/planner/homing",
       std::bind(&PotentialFieldJoint::homing_callback, this, _1, _2));
 
-    // Pre-size messages once (avoid resizing in every loop) :contentReference[oaicite:6]{index=6}
+    //pre-size messages
     joint_vel_msg_.data.resize(DOF);
 
-    // 500 Hz loop (2 ms) as required :contentReference[oaicite:7]{index=7}
+    
     using namespace std::chrono_literals;
+    //run update every 2ms(500hz)
     timer_ = this->create_wall_timer(2ms, std::bind(&PotentialFieldJoint::update, this));
 
-    // Required initial behavior: output zero velocity & done=true before activation :contentReference[oaicite:8]{index=8}
+    //output zero vel,done=true before activate
     publish_zero_and_done_true();
 
     RCLCPP_INFO(this->get_logger(), "potential_field_joint started (500 Hz).");
@@ -100,10 +110,10 @@ public:
 private:
   static constexpr size_t DOF = 7;
 
-  // ---------- Callbacks ----------
+  //callbacks
   void joint_callback(const sensor_msgs::msg::JointState::SharedPtr msg)
   {
-    // We need at least 7 joint positions
+    //at least 7 joint positions
     if (msg->position.size() < DOF) {
       RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
                            "JointState position size=%zu < 7. Waiting...",
@@ -112,7 +122,7 @@ private:
       return;
     }
 
-    // Assume first 7 positions correspond to the 7 arm joints (typical for course sim)
+    //first 7 positions correspond to the 7 arm joints
     for (size_t i = 0; i < DOF; ++i) {
       q_[i] = msg->position[i];
     }
@@ -125,11 +135,11 @@ private:
     const std::shared_ptr<std_srvs::srv::Trigger::Request> /*request*/,
     std::shared_ptr<std_srvs::srv::Trigger::Response> response)
   {
-    // Requirement: service returns success=false if called before first joint feedback :contentReference[oaicite:9]{index=9}
+    //service returns success=false if called before first joint feedback
     if (!have_joint_) {
       response->success = false;
       response->message = "No joint feedback yet (/joint_states not received).";
-      RCLCPP_WARN(this->get_logger(), "/planner/homing called before first /joint_states => success=false");
+      RCLCPP_WARN(this->get_logger(), "/planner/homing called before first /joint_states, success=false");
       return;
     }
 
@@ -139,19 +149,15 @@ private:
     RCLCPP_INFO(this->get_logger(), "Homing triggered.");
   }
 
-  // ---------- Main Loop ----------
   void update()
   {
-    // Requirement: before service call OR before joint feedback:
-    // publish zero velocity and done=true :contentReference[oaicite:10]{index=10}
+    //before serv call or joint fb, zero vel and done=true 
     if (!have_joint_ || !homing_active_) {
       publish_zero_and_done_true();
       return;
     }
 
-    // Compute per-joint error and velocity command:
-    // qdot = k_att * (q_default - q)
-    // Then cap EACH joint by maximum_joint_velocity (no normalization) :contentReference[oaicite:11]{index=11}
+    //find per-joint error and velocity command
     bool all_within = true;
 
     for (size_t i = 0; i < DOF; ++i) {
@@ -163,20 +169,19 @@ private:
 
       double qdot = k_att_ * e;
 
-      // per-joint clamp
+      //per-joint clamp
       const double lim = std::fabs(vmax_[i]);
-      qdot = clamp(qdot, -lim, lim);
+      qdot = clamp(qdot, -lim, lim); //give the velocity lim
 
       joint_vel_msg_.data[i] = qdot;
     }
 
     done_msg_.data = all_within;
 
-    // If done, you can optionally stop homing (safe behavior)
-    // The assignment mainly checks /planner/done and velocity. :contentReference[oaicite:12]{index=12}
+    // if done, stop homing 
     if (all_within) {
       homing_active_ = false;
-      // publish zeros (so it doesn't drift)
+      //to zeros
       for (size_t i = 0; i < DOF; ++i) joint_vel_msg_.data[i] = 0.0;
     }
 
@@ -184,8 +189,8 @@ private:
     done_pub_->publish(done_msg_);
   }
 
-  // ---------- Helpers ----------
-  static double clamp(double v, double lo, double hi)
+  //helper
+  static double clamp(double v, double lo, double hi) //limit vel
   {
     return std::max(lo, std::min(v, hi));
   }
@@ -201,18 +206,18 @@ private:
     done_pub_->publish(done_msg_);
   }
 
-  // ---------- ROS interfaces ----------
+  
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_sub_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_vel_pub_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr done_pub_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr homing_srv_;
   rclcpp::TimerBase::SharedPtr timer_;
 
-  // ---------- Messages (reused, avoid allocations in loop) ----------
+  //msg
   std_msgs::msg::Float64MultiArray joint_vel_msg_;
   std_msgs::msg::Bool done_msg_;
 
-  // ---------- State ----------
+  //State
   bool have_joint_{false};
   bool homing_active_{false};
 
