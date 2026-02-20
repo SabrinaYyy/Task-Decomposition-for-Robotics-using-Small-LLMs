@@ -1,0 +1,10 @@
+<launch>
+  <!-- Potential Field Task Space Planner -->
+  <node pkg="potential_field" exec="potential_field_task" name="potential_field_task" output="screen">
+    <param name="use_sim_time" value="true"/>
+    <param name="publish_rate" value="500.0"/>
+    <param name="k_att_linear" value="5.0"/>
+    <param name="maximum_linear_velocity" value="1.0"/>
+    <param name="done_threshold" value="1e-4"/>   
+  </node>
+</launch>

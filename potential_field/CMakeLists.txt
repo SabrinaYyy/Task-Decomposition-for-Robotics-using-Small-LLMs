@@ -13,8 +13,9 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)   #JointState
 find_package(std_srvs REQUIRED)      #Trigger service
 find_package(highlevel_interfaces REQUIRED)
+find_package(Eigen3 REQUIRED)        # ADD THIS - needed for potential_field_task
 
-#a2
+# a2
 add_executable(potential_field_2d src/potential_field_2d.cpp)
 ament_target_dependencies(potential_field_2d
   rclcpp
@@ -23,7 +24,7 @@ ament_target_dependencies(potential_field_2d
   highlevel_interfaces
 )
 
-#a3
+# a3
 add_executable(potential_field_joint src/potential_field_joint.cpp)
 ament_target_dependencies(potential_field_joint
   rclcpp
@@ -31,25 +32,39 @@ ament_target_dependencies(potential_field_joint
   sensor_msgs
   std_srvs
 )
+target_link_libraries(potential_field_joint
+  Eigen3::Eigen
+)
+
+# a4
+add_executable(potential_field_task src/potential_field_task.cpp)
+ament_target_dependencies(potential_field_task
+  rclcpp
+  geometry_msgs
+  std_msgs
+  highlevel_interfaces
+)
+
+target_link_libraries(potential_field_task
+  Eigen3::Eigen
+)
+
 
 install(
-  DIRECTORY config
+  DIRECTORY config launch    # ADD 'launch' here to install launch files
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(TARGETS potential_field_2d
+install(TARGETS 
+  potential_field_2d
   potential_field_joint
+  potential_field_task
   DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
   set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()

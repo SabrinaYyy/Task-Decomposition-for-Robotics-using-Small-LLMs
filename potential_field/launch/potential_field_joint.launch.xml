@@ -1,0 +1,10 @@
+<launch>
+  <!-- Potential Field Joint Space Planner -->
+  <node pkg="potential_field" exec="potential_field_joint" name="potential_field_joint" output="screen">
+    <param name="use_sim_time" value="true"/>
+    <param name="publish_rate" value="500.0"/>
+    <param name="k_att" value="5.0"/>
+    <param name="maximum_joint_velocity" value="[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]"/>
+    <param name="default_joint_position" value="[0.0, 0.6, 0.0, 0.6, 0.0, 0.6, 0.0]"/>
+  </node>
+</launch>
