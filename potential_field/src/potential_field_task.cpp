@@ -10,29 +10,29 @@ public:
     PotentialFieldTask() : Node("potential_field_task"), 
                            target_set_(false),
                            first_feedback_received_(false) {
-        // Read parameters
+        //read params
         if (!readParameters()) {
             RCLCPP_ERROR(this->get_logger(), "Failed to read parameters");
             rclcpp::shutdown();
             return;
         }
         
-        // Create service
+        //create service
         service_ = this->create_service<highlevel_interfaces::srv::Move3d>(
             "/planner/move_to",
             std::bind(&PotentialFieldTask::serviceCallback, this,
                      std::placeholders::_1, std::placeholders::_2));
         
-        // Create subscriber to feedback pose
+        //create subscriber to feedback pose
         pose_sub_ = this->create_subscription<geometry_msgs::msg::Pose>(
             "/gen3/feedback/pose", 10,
             std::bind(&PotentialFieldTask::poseCallback, this, std::placeholders::_1));
         
-        // Create publisher for reference twist
+        //create publisher for reference twist
         twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
             "/gen3/reference/twist", 10);
         
-        // Create timer for publishing at fixed rate
+        //create timer for publishing at fixed rate
         timer_ = this->create_wall_timer(
             std::chrono::duration<double>(1.0 / publish_rate_),
             std::bind(&PotentialFieldTask::timerCallback, this));
@@ -87,29 +87,29 @@ private:
     }
     
     void timerCallback() {
-        // Don't publish if we haven't received feedback or target
+        //don't publish if haven't received feedback or target
         if (!first_feedback_received_ || !target_set_) {
             return;
         }
         
-        // Compute potential field
+        //compute potential field
         Eigen::Vector3d error = target_pos_ - current_pos_;
         Eigen::Vector3d reference_vel = k_att_linear_ * error;
         
-        // Saturate velocity
+        //saturate velocity
         double vel_norm = reference_vel.norm();
         if (vel_norm > max_linear_velocity_) {
             reference_vel = reference_vel * (max_linear_velocity_ / vel_norm);
         }
         
-        // Check if reached target (within 1cm)
+        //check if reached target (within 1mm)
         if (error.norm() < done_threshold_) {
             reference_vel.setZero();
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
                                "Target reached!");
         }
         
-        // Publish reference twist
+        //publish reference twist
         geometry_msgs::msg::Twist twist_msg;
         twist_msg.linear.x = reference_vel[0];
         twist_msg.linear.y = reference_vel[1];
@@ -121,19 +121,19 @@ private:
         twist_pub_->publish(twist_msg);
     }
     
-    // ROS interfaces
+    //rosinterfaces
     rclcpp::Service<highlevel_interfaces::srv::Move3d>::SharedPtr service_;
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr pose_sub_;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
     
-    // Parameters
+    //parameters
     double publish_rate_;
     double k_att_linear_;
     double max_linear_velocity_;
     double done_threshold_;
 
-    // State
+    //state
     Eigen::Vector3d current_pos_;
     Eigen::Vector3d target_pos_;
     bool target_set_;

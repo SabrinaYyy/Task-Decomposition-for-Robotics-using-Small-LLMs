@@ -7,11 +7,11 @@ using namespace std::chrono_literals;
 
 KinematicController::KinematicController()
 : Node("kinematic_controller"),
+  //with_redundancy_(false),
   first_joint_received_(false),
   first_twist_received_(false),
-  first_joint_ref_received_(false),
-  publish_rate_(500.0),
-  with_redundancy_(false)
+  first_joint_ref_received_(false)
+  
 {
   // Read parameters
   if (!readParameters()) {
