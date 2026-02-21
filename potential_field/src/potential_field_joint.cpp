@@ -34,7 +34,7 @@ public:
     k_att_ = this->get_parameter("k_att").as_double();
     done_threshold_ = this->get_parameter("done_threshold").as_double();
 
-    // Read vectors (and validate sizes)
+    // Read vectors and validate sizes
     std::vector<double> vmax_vec = this->get_parameter("maximum_joint_velocity").as_double_array();
     std::vector<double> qdef_vec = this->get_parameter("default_joint_position").as_double_array();
 
@@ -73,8 +73,7 @@ public:
     done_pub_ = this->create_publisher<std_msgs::msg::Bool>(
       "/planner/done", qos);
 
-    // (Optional A3 compatibility) Homing service:
-    // We DO NOT require it to start publishing. It just “arms” homing_active_ if you want.
+    // (A3 compatibility) Homing service:
     homing_srv_ = this->create_service<std_srvs::srv::Trigger>(
       "/planner/homing", std::bind(&PotentialFieldJoint::homing_callback, this, _1, _2));
 
@@ -84,9 +83,9 @@ public:
     auto timer_period = std::chrono::duration<double>(1.0 / publish_rate);
     timer_ = this->create_wall_timer(timer_period, std::bind(&PotentialFieldJoint::update, this));
 
-    // Before first joint feedback:
-    // - OK to publish planner zeros/done=true (your own topic)
-    // - MUST NOT publish /gen3/reference/velocity
+    //before first joint feedback:
+    //could publish planner zeros/done=true 
+    //should not publish /gen3/reference/velocity
     publish_planner_zero_and_done_true();
 
     RCLCPP_INFO(this->get_logger(), "potential_field_joint started (%.1f Hz).", publish_rate);
@@ -104,14 +103,13 @@ private:
       return;
     }
 
-    // Simple assumption: first 7 positions correspond to joints
+    //assume first 7 positions correspond to joints
     for (size_t i = 0; i < DOF; ++i) q_[i] = msg->position[i];
 
     have_joint_ = true;
     RCLCPP_INFO_ONCE(this->get_logger(), "Received first /joint_states.");
 
-    // If you want A3 “homing” semantics, you can auto-enable it on first feedback:
-    // For A4 Step IV it’s fine either way, because we do not gate publishing on it.
+    // If want A3 “homing” semantics,can auto-enable it on first feedback:
     if (!homing_ever_triggered_) {
       homing_active_ = true;
     }
@@ -126,7 +124,7 @@ private:
       response->message = "No /joint_states yet.";
       return;
     }
-    homing_active_ = true;          // for A3 “start homing”
+    homing_active_ = true;          // A3 “start homing”
     homing_ever_triggered_ = true;
     response->success = true;
     response->message = "Homing enabled.";
@@ -135,7 +133,7 @@ private:
 
   void update()
   {
-    // A4 requirement: do NOT publish /gen3/reference/velocity until first feedback
+    // A4: don't publish /gen3/reference/velocity until first feedback
     if (!have_joint_) {
       publish_planner_zero_and_done_true();
       return;
@@ -153,8 +151,8 @@ private:
       const double lim = std::fabs(vmax_[i]);
       qdot = clamp(qdot, -lim, lim);
 
-      // If you want A3 semantics (only move when homing_active_), apply it here:
-      // For A4 Step IV, you can just always move; but keeping this switch helps future reuse.
+      // If want A3(only move when homing_active_), apply here:
+      // For A4 can just always move; keeping for future reuse.
       if (!homing_active_) qdot = 0.0;
 
       joint_vel_msg_.data[i] = qdot;
@@ -162,15 +160,15 @@ private:
 
     done_msg_.data = all_within;
 
-    // If "done", optionally stop homing (A3 style)
+    // If "done", optionally stop homing (A3
     if (all_within) {
       homing_active_ = false;
       for (size_t i = 0; i < DOF; ++i) joint_vel_msg_.data[i] = 0.0;
     }
 
     // Publish:
-    // - Always publish planner topics
-    // - Publish controller topic only after first feedback (we are in have_joint_=true)
+    //always publish planner topics
+    //publish controller topic only after first feedback
     joint_vel_pub_a3_->publish(joint_vel_msg_);
     done_pub_->publish(done_msg_);
     joint_vel_pub_a4_->publish(joint_vel_msg_);
@@ -183,7 +181,7 @@ private:
 
     joint_vel_pub_a3_->publish(joint_vel_msg_);
     done_pub_->publish(done_msg_);
-    // IMPORTANT: no publish to /gen3/reference/velocity here
+    //no publish to /gen3/reference/velocity ici
   }
 
   static double clamp(double v, double lo, double hi)
@@ -191,7 +189,7 @@ private:
     return std::max(lo, std::min(v, hi));
   }
 
-  // ROS interfaces
+  //ros interfaces
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_sub_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_vel_pub_a3_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_vel_pub_a4_;
@@ -199,14 +197,14 @@ private:
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr homing_srv_;
   rclcpp::TimerBase::SharedPtr timer_;
 
-  // Messages
+  //msg
   std_msgs::msg::Float64MultiArray joint_vel_msg_;
   std_msgs::msg::Bool done_msg_;
 
-  // State
+  //state
   bool have_joint_{false};
 
-  // For “cumulative” compatibility with A3:
+  //cumulative compatibility with a3:
   bool homing_active_{false};
   bool homing_ever_triggered_{false};
 

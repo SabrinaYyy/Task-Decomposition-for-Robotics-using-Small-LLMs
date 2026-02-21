@@ -86,7 +86,7 @@ void KinematicController::init()
   pinocchio::urdf::buildModel(urdf_file_name_, model_, false);
   data_ = pinocchio::Data(model_);
 
-  // Same as prof example (bracelet_link)
+  //bracelet_link
   hand_id_ = model_.getJointId("bracelet_link") - 1;
   dim_joints_ = model_.nq;
 
@@ -119,7 +119,7 @@ void KinematicController::init()
 
 void KinematicController::jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
 {
-  // Copy joint positions (and velocities if available)
+  // Copy joint positions and velocities if available
   const size_t npos = std::min(msg->position.size(), static_cast<size_t>(dim_joints_));
   for (size_t i = 0; i < npos; ++i) {
     joint_pos_[static_cast<int>(i)] = msg->position[i];
@@ -129,7 +129,7 @@ void KinematicController::jointStateCallback(const sensor_msgs::msg::JointState:
   for (size_t i = 0; i < nvel; ++i) {
     joint_vel_[static_cast<int>(i)] = msg->velocity[i];
   }
-  // If velocity not provided, leave remaining entries as-is; or force to zero:
+  //ifvelocity not provided, leave remaining entries as-is; or force to zero:
   if (msg->velocity.size() < npos) {
     for (size_t i = nvel; i < npos; ++i) joint_vel_[static_cast<int>(i)] = 0.0;
   }
@@ -142,7 +142,7 @@ void KinematicController::jointStateCallback(const sensor_msgs::msg::JointState:
 
 void KinematicController::referenceTwistCallback(const geometry_msgs::msg::Twist::SharedPtr msg)
 {
-  // Translation-only task velocity (x_dot)
+  // Translation-only task velocity(x_dot)
   ref_task_vel_[0] = msg->linear.x;
   ref_task_vel_[1] = msg->linear.y;
   ref_task_vel_[2] = msg->linear.z;
@@ -175,20 +175,15 @@ void KinematicController::computeForwardKinematics()
   // Compute forward kinematics with current q, dq
   pinocchio::forwardKinematics(model_, data_, joint_pos_, joint_vel_);
 
-  // End-effector pose (translation only)
+  //End-effector pose
   const pinocchio::SE3 pose_now = data_.oMi[hand_id_];
   fbk_task_pos_ = pose_now.translation();
 
-  // A simple “consistent” EE linear velocity estimate:
-  // (Pinocchio velocity access can vary; this keeps it stable for feedback)
-  // If you want, you can replace with getJointVelocity in LOCAL_WORLD_ALIGNED.
   fbk_task_vel_ = data_.v[hand_id_].linear();
 }
 
 void KinematicController::computeJacobian()
 {
-  // Compute Jacobian in LOCAL_WORLD_ALIGNED like the example
-  // Using computeAllTerms is also fine; but for just Jacobian, these are enough:
   pinocchio::computeAllTerms(model_, data_, joint_pos_, joint_vel_);
   pinocchio::getJointJacobian(
     model_, data_, hand_id_, pinocchio::ReferenceFrame::LOCAL_WORLD_ALIGNED, jacobian_);
@@ -202,7 +197,7 @@ void KinematicController::computeJacobian()
 
 void KinematicController::computeInverseKinematics()
 {
-  // Don’t compute/publish command until you have both joint feedback and reference twist
+  // Don’t compute/publish command until have both joint feedback and reference twist
   if (!first_joint_received_ || !first_twist_received_) return;
 
   // Basic IK: qdot = J^+ * xdot_ref
@@ -225,7 +220,7 @@ void KinematicController::computeInverseKinematics()
 
 void KinematicController::publishFeedback()
 {
-  // Fixed-rate loop does EVERYTHING: FK + Jacobian + publish feedback + publish command
+  // Fixed-rate loop: FK + Jacobian + publish feedback + publish command
   if (!first_joint_received_) return;
 
   computeForwardKinematics();
@@ -243,7 +238,7 @@ void KinematicController::publishFeedback()
   pose_msg.orientation.z = 0.0;
   pose_pub_->publish(pose_msg);
 
-  // Publish twist feedback (linear only)
+  // Publish twist feedback (linear)
   geometry_msgs::msg::Twist twist_msg;
   twist_msg.linear.x = fbk_task_vel_[0];
   twist_msg.linear.y = fbk_task_vel_[1];

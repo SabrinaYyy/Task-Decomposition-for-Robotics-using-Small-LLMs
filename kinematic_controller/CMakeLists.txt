@@ -21,26 +21,25 @@ include_directories(
 )
 
 # Add executable
-add_executable(kinematic_controller_node 
+add_executable(kinematic_controller
   src/kinematic_controller.cpp
 )
-
 # Link dependencies
-ament_target_dependencies(kinematic_controller_node
+ament_target_dependencies(kinematic_controller
   rclcpp
   sensor_msgs
   geometry_msgs
   std_msgs
 )
 
-target_link_libraries(kinematic_controller_node
+target_link_libraries(kinematic_controller
   pinocchio::pinocchio
   Eigen3::Eigen
 )
 
 # Install targets
 install(TARGETS
-  kinematic_controller_node
+  kinematic_controller
   DESTINATION lib/${PROJECT_NAME}
 )
 

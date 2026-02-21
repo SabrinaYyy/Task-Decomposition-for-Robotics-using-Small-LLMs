@@ -12,7 +12,7 @@
 #include <pinocchio/parsers/urdf.hpp>
 #include <pinocchio/algorithm/kinematics.hpp>
 #include <pinocchio/algorithm/jacobian.hpp>
-#include <pinocchio/algorithm/compute-all-terms.hpp>   // IMPORTANT for computeAllTerms
+#include <pinocchio/algorithm/compute-all-terms.hpp>   
 
 #include <Eigen/Dense>
 #include <string>
@@ -30,7 +30,7 @@ private:
   // Callbacks
   void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
   void referenceTwistCallback(const geometry_msgs::msg::Twist::SharedPtr msg);
-  void referenceJointVelCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg); // NEW
+  void referenceJointVelCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg); 
 
   // Computation
   void computeForwardKinematics();
@@ -60,17 +60,17 @@ private:
   // Redundancy (Step V)
   Eigen::MatrixXd N_;            // 7x7 nullspace projector
   Eigen::VectorXd ref_joint_vel_;// 7x1 reference from joint planner
-  bool with_redundancy_{false};  // NEW
+  bool with_redundancy_{false};  
 
   // Flags
   bool first_joint_received_{false};
   bool first_twist_received_{false};
-  bool first_joint_ref_received_{false}; // NEW
+  bool first_joint_ref_received_{false}; 
 
   // ROS interfaces
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_sub_;
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr twist_sub_;
-  rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr joint_ref_sub_; // NEW
+  rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr joint_ref_sub_; 
 
   rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_pub_;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
