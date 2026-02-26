@@ -179,12 +179,13 @@ void KinematicController::computeForwardKinematics()
   const pinocchio::SE3 pose_now = data_.oMi[hand_id_];
   fbk_task_pos_ = pose_now.translation();
 
-  fbk_task_vel_ = data_.v[hand_id_].linear();
+  //fbk_task_vel_ = data_.v[hand_id_].linear();
 }
 
 void KinematicController::computeJacobian()
 {
-  pinocchio::computeAllTerms(model_, data_, joint_pos_, joint_vel_);
+  //pinocchio::computeAllTerms(model_, data_, joint_pos_, joint_vel_);
+  pinocchio::computeJointJacobians(model_, data_, joint_pos_);
   pinocchio::getJointJacobian(
     model_, data_, hand_id_, pinocchio::ReferenceFrame::LOCAL_WORLD_ALIGNED, jacobian_);
 
@@ -193,6 +194,7 @@ void KinematicController::computeJacobian()
 
   // pseudo-inverse: 7x3
   J_pinv_ = J_linear_.completeOrthogonalDecomposition().pseudoInverse();
+
 }
 
 void KinematicController::computeInverseKinematics()
@@ -225,6 +227,7 @@ void KinematicController::publishFeedback()
 
   computeForwardKinematics();
   computeJacobian();
+  fbk_task_vel_ = J_linear_ * joint_vel_;
 
   // Publish pose feedback
   geometry_msgs::msg::Pose pose_msg;
