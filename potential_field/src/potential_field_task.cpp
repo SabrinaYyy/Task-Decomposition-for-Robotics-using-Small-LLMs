@@ -4,11 +4,11 @@
 #include <highlevel_interfaces/srv/move3d.hpp>
 #include <Eigen/Dense>
 #include <cmath>
+#include <vector>
 
 class PotentialFieldTask : public rclcpp::Node {
 public:
     PotentialFieldTask() : Node("potential_field_task"), 
-                           target_set_(false),
                            first_feedback_received_(false) {
         //read params
         if (!readParameters()) {
@@ -28,7 +28,9 @@ public:
             "/gen3/feedback/pose", 10,
             std::bind(&PotentialFieldTask::poseCallback, this, std::placeholders::_1));
         
-        //create publisher for reference twist
+        //create publisher for reference pose and twist
+        pose_pub_ = this->create_publisher<geometry_msgs::msg::Pose>(
+            "/gen3/reference/pose", 10);
         twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
             "/gen3/reference/twist", 10);
         
@@ -46,11 +48,21 @@ private:
         this->declare_parameter<double>("k_att_linear", 5.0);
         this->declare_parameter<double>("maximum_linear_velocity", 1.0);
         this->declare_parameter<double>("done_threshold", 1e-4);
+        this->declare_parameter<std::vector<double>>(
+            "default_target_position", std::vector<double>{0.5, 0.2, 0.5});
         
         this->get_parameter("publish_rate", publish_rate_);
         this->get_parameter("k_att_linear", k_att_linear_);
         this->get_parameter("maximum_linear_velocity", max_linear_velocity_);
         this->get_parameter("done_threshold", done_threshold_);
+        const auto default_target = this->get_parameter("default_target_position").as_double_array();
+        if (default_target.size() == 3) {
+            target_pos_[0] = default_target[0];
+            target_pos_[1] = default_target[1];
+            target_pos_[2] = default_target[2];
+        } else {
+            target_pos_ = Eigen::Vector3d(0.5, 0.2, 0.5);
+        }
 
         RCLCPP_INFO(this->get_logger(), "Publish rate: %.1f Hz", publish_rate_);
         RCLCPP_INFO(this->get_logger(), "K_att_linear: %.2f", k_att_linear_);
@@ -67,7 +79,6 @@ private:
         target_pos_[0] = request->x;
         target_pos_[1] = request->y;
         target_pos_[2] = request->z;
-        target_set_ = true;
         
         RCLCPP_INFO(this->get_logger(), "New target: [%.3f, %.3f, %.3f]",
                     target_pos_[0], target_pos_[1], target_pos_[2]);
@@ -87,8 +98,7 @@ private:
     }
     
     void timerCallback() {
-        //don't publish if haven't received feedback or target
-        if (!first_feedback_received_ || !target_set_) {
+        if (!first_feedback_received_) {
             return;
         }
         
@@ -108,6 +118,19 @@ private:
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
                                "Target reached!");
         }
+
+        const double dt = 1.0 / publish_rate_;
+        const Eigen::Vector3d reference_pos = current_pos_ + dt * reference_vel;
+
+        geometry_msgs::msg::Pose pose_msg;
+        pose_msg.position.x = reference_pos[0];
+        pose_msg.position.y = reference_pos[1];
+        pose_msg.position.z = reference_pos[2];
+        pose_msg.orientation.w = 1.0;
+        pose_msg.orientation.x = 0.0;
+        pose_msg.orientation.y = 0.0;
+        pose_msg.orientation.z = 0.0;
+        pose_pub_->publish(pose_msg);
         
         //publish reference twist
         geometry_msgs::msg::Twist twist_msg;
@@ -124,6 +147,7 @@ private:
     //rosinterfaces
     rclcpp::Service<highlevel_interfaces::srv::Move3d>::SharedPtr service_;
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr pose_sub_;
+    rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_pub_;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
     
@@ -136,7 +160,6 @@ private:
     //state
     Eigen::Vector3d current_pos_;
     Eigen::Vector3d target_pos_;
-    bool target_set_;
     bool first_feedback_received_;
 };
 

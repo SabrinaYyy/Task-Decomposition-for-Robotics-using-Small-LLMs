@@ -67,6 +67,8 @@ public:
     // Pubs (A3 + A4)
     joint_vel_pub_a3_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
       "/planner/joint_velocity", qos);
+    joint_pos_pub_a5_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
+      "/gen3/reference/position", qos);
     joint_vel_pub_a4_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
       "/gen3/reference/velocity", qos);
 
@@ -78,6 +80,8 @@ public:
       "/planner/homing", std::bind(&PotentialFieldJoint::homing_callback, this, _1, _2));
 
     joint_vel_msg_.data.resize(DOF);
+    joint_pos_msg_.data.resize(DOF);
+    for (size_t i = 0; i < DOF; ++i) joint_pos_msg_.data[i] = q_default_[i];
 
     // Timer
     auto timer_period = std::chrono::duration<double>(1.0 / publish_rate);
@@ -170,6 +174,7 @@ private:
     //always publish planner topics
     //publish controller topic only after first feedback
     joint_vel_pub_a3_->publish(joint_vel_msg_);
+    joint_pos_pub_a5_->publish(joint_pos_msg_);
     done_pub_->publish(done_msg_);
     joint_vel_pub_a4_->publish(joint_vel_msg_);
   }
@@ -180,6 +185,7 @@ private:
     done_msg_.data = true;
 
     joint_vel_pub_a3_->publish(joint_vel_msg_);
+    joint_pos_pub_a5_->publish(joint_pos_msg_);
     done_pub_->publish(done_msg_);
     //no publish to /gen3/reference/velocity ici
   }
@@ -192,6 +198,7 @@ private:
   //ros interfaces
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_sub_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_vel_pub_a3_;
+  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_pos_pub_a5_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_vel_pub_a4_;
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr done_pub_;
   rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr homing_srv_;
@@ -199,6 +206,7 @@ private:
 
   //msg
   std_msgs::msg::Float64MultiArray joint_vel_msg_;
+  std_msgs::msg::Float64MultiArray joint_pos_msg_;
   std_msgs::msg::Bool done_msg_;
 
   //state

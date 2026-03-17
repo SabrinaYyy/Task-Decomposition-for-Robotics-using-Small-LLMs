@@ -6,9 +6,9 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/Move2d.srv"
-  "srv/Move3d.srv"    
+  "srv/Move3d.srv"
+  "srv/SetKD.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)
 ament_package()
-
