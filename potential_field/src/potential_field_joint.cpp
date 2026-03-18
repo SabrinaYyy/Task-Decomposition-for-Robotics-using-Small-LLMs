@@ -81,15 +81,16 @@ public:
 
     joint_vel_msg_.data.resize(DOF);
     joint_pos_msg_.data.resize(DOF);
-    for (size_t i = 0; i < DOF; ++i) joint_pos_msg_.data[i] = q_default_[i];
+    for (size_t i = 0; i < DOF; ++i) {
+      joint_pos_msg_.data[i] = q_default_[i];
+    }
 
     // Timer
     auto timer_period = std::chrono::duration<double>(1.0 / publish_rate);
     timer_ = this->create_wall_timer(timer_period, std::bind(&PotentialFieldJoint::update, this));
 
-    //before first joint feedback:
-    //could publish planner zeros/done=true 
-    //should not publish /gen3/reference/velocity
+    // Before the first joint feedback, keep publishing the desired joint target so the
+    // redundancy controller always has a valid q_ref.
     publish_planner_zero_and_done_true();
 
     RCLCPP_INFO(this->get_logger(), "potential_field_joint started (%.1f Hz).", publish_rate);
@@ -137,7 +138,7 @@ private:
 
   void update()
   {
-    // A4: don't publish /gen3/reference/velocity until first feedback
+    // Keep /gen3/reference/position available at all times for A5.
     if (!have_joint_) {
       publish_planner_zero_and_done_true();
       return;
@@ -170,9 +171,11 @@ private:
       for (size_t i = 0; i < DOF; ++i) joint_vel_msg_.data[i] = 0.0;
     }
 
-    // Publish:
-    //always publish planner topics
-    //publish controller topic only after first feedback
+    // q_ref is the fixed null-space target from the assignment.
+    for (size_t i = 0; i < DOF; ++i) {
+      joint_pos_msg_.data[i] = q_default_[i];
+    }
+
     joint_vel_pub_a3_->publish(joint_vel_msg_);
     joint_pos_pub_a5_->publish(joint_pos_msg_);
     done_pub_->publish(done_msg_);
@@ -182,6 +185,7 @@ private:
   void publish_planner_zero_and_done_true()
   {
     for (size_t i = 0; i < DOF; ++i) joint_vel_msg_.data[i] = 0.0;
+    for (size_t i = 0; i < DOF; ++i) joint_pos_msg_.data[i] = q_default_[i];
     done_msg_.data = true;
 
     joint_vel_pub_a3_->publish(joint_vel_msg_);

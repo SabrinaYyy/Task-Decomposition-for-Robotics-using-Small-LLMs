@@ -267,8 +267,9 @@ void DynamicController::computeAndPublishCommand()
   Eigen::VectorXd tau_cmd = j_linear_.transpose() * wrench_cmd;
 
   if (with_redundancy_ && first_joint_pos_ref_received_ && first_joint_vel_ref_received_) {
-    const Eigen::VectorXd tau_joint =
+    const Eigen::VectorXd qddot_null_cmd =
       joint_d_ * (ref_joint_vel_ - joint_vel_) + joint_k_ * (ref_joint_pos_ - joint_pos_);
+    const Eigen::VectorXd tau_joint = mass_matrix_ * qddot_null_cmd + nonlinear_effects_;
     nullspace_projection_ =
       Eigen::MatrixXd::Identity(dim_joints_, dim_joints_) -
       j_linear_.transpose() * lambda_ * j_linear_ * mass_inv;
