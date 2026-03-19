@@ -30,7 +30,7 @@ public:
       "default_joint_position", std::vector<double>{0.0, 0.6, 0.0, 0.6, 0.0, 0.6, 0.0});
     this->declare_parameter<double>("done_threshold", 0.05);
 
-    const double publish_rate = this->get_parameter("publish_rate").as_double();
+    publish_rate_ = this->get_parameter("publish_rate").as_double();
     k_att_ = this->get_parameter("k_att").as_double();
     done_threshold_ = this->get_parameter("done_threshold").as_double();
 
@@ -56,7 +56,7 @@ public:
 
     RCLCPP_INFO(this->get_logger(),
       "params: rate=%.1f Hz k_att=%.3f done_th=%.3f",
-      publish_rate, k_att_, done_threshold_);
+      publish_rate_, k_att_, done_threshold_);
 
     auto qos = rclcpp::QoS(rclcpp::KeepLast(10));
 
@@ -86,14 +86,14 @@ public:
     }
 
     // Timer
-    auto timer_period = std::chrono::duration<double>(1.0 / publish_rate);
+    auto timer_period = std::chrono::duration<double>(1.0 / publish_rate_);
     timer_ = this->create_wall_timer(timer_period, std::bind(&PotentialFieldJoint::update, this));
 
     // Before the first joint feedback, keep publishing the desired joint target so the
     // redundancy controller always has a valid q_ref.
     publish_planner_zero_and_done_true();
 
-    RCLCPP_INFO(this->get_logger(), "potential_field_joint started (%.1f Hz).", publish_rate);
+    RCLCPP_INFO(this->get_logger(), "potential_field_joint started (%.1f Hz).", publish_rate_);
   }
 
 private:
@@ -171,9 +171,9 @@ private:
       for (size_t i = 0; i < DOF; ++i) joint_vel_msg_.data[i] = 0.0;
     }
 
-    // q_ref is the fixed null-space target from the assignment.
+    // q_ref is the look-ahead: current joint position integrated one step forward.
     for (size_t i = 0; i < DOF; ++i) {
-      joint_pos_msg_.data[i] = q_default_[i];
+      joint_pos_msg_.data[i] = q_[i] + joint_vel_msg_.data[i] / publish_rate_;
     }
 
     joint_vel_pub_a3_->publish(joint_vel_msg_);
@@ -191,7 +191,7 @@ private:
     joint_vel_pub_a3_->publish(joint_vel_msg_);
     joint_pos_pub_a5_->publish(joint_pos_msg_);
     done_pub_->publish(done_msg_);
-    //no publish to /gen3/reference/velocity ici
+    joint_vel_pub_a4_->publish(joint_vel_msg_);
   }
 
   static double clamp(double v, double lo, double hi)
@@ -224,6 +224,7 @@ private:
   std::array<double, DOF> q_default_{};
   std::array<double, DOF> vmax_{};
 
+  double publish_rate_{500.0};
   double k_att_{5.0};
   double done_threshold_{0.05};
 };
