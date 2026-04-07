@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)   #JointState
@@ -49,6 +50,19 @@ target_link_libraries(potential_field_task
   Eigen3::Eigen
 )
 
+# a6
+add_executable(potential_field_action_server src/potential_field_action_server.cpp)
+ament_target_dependencies(potential_field_action_server
+  rclcpp
+  rclcpp_action
+  geometry_msgs
+  highlevel_interfaces
+)
+
+target_link_libraries(potential_field_action_server
+  Eigen3::Eigen
+)
+
 
 install(
   DIRECTORY config launch    # ADD 'launch' here to install launch files
@@ -59,6 +73,7 @@ install(TARGETS
   potential_field_2d
   potential_field_joint
   potential_field_task
+  potential_field_action_server
   DESTINATION lib/${PROJECT_NAME}
 )
 

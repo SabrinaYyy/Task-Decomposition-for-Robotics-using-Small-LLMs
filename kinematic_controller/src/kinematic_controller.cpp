@@ -1,7 +1,7 @@
 #include "kinematic_controller/kinematic_controller.hpp"
 
-#include <chrono>
 #include <algorithm>
+#include <chrono>
 
 using namespace std::chrono_literals;
 
@@ -52,8 +52,10 @@ KinematicController::KinematicController()
     std::bind(&KinematicController::publishFeedback, this));
 
   RCLCPP_INFO(this->get_logger(),
-              "KinematicController initialized. rate=%.1f Hz with_redundancy=%s",
-              publish_rate_, with_redundancy_ ? "true" : "false");
+              "KinematicController initialized. rate=%.1f Hz with_redundancy=%s control_orientation=%s",
+              publish_rate_,
+              with_redundancy_ ? "true" : "false",
+              control_orientation_ ? "true" : "false");
 }
 
 bool KinematicController::readParameters()
@@ -61,6 +63,7 @@ bool KinematicController::readParameters()
   this->declare_parameter<std::string>("urdf_file_name", "");
   this->declare_parameter<double>("publish_rate", 500.0);
   this->declare_parameter<bool>("with_redundancy", false);
+  this->declare_parameter<bool>("control_orientation", false);
 
   if (!this->get_parameter("urdf_file_name", urdf_file_name_)) {
     RCLCPP_ERROR(this->get_logger(), "Failed to get urdf_file_name parameter");
@@ -73,10 +76,12 @@ bool KinematicController::readParameters()
 
   this->get_parameter("publish_rate", publish_rate_);
   this->get_parameter("with_redundancy", with_redundancy_);
+  this->get_parameter("control_orientation", control_orientation_);
 
   RCLCPP_INFO(this->get_logger(), "URDF file: %s", urdf_file_name_.c_str());
   RCLCPP_INFO(this->get_logger(), "Publish rate: %.1f Hz", publish_rate_);
   RCLCPP_INFO(this->get_logger(), "With redundancy: %s", with_redundancy_ ? "true" : "false");
+  RCLCPP_INFO(this->get_logger(), "Control orientation: %s", control_orientation_ ? "true" : "false");
   return true;
 }
 
@@ -101,19 +106,25 @@ void KinematicController::init()
   joint_pos_ = Eigen::VectorXd::Zero(dim_joints_);
   joint_vel_ = Eigen::VectorXd::Zero(dim_joints_);
   fbk_task_pos_ = Eigen::Vector3d::Zero();
+  fbk_task_orientation_ = Eigen::Quaterniond::Identity();
   fbk_task_vel_ = Eigen::Vector3d::Zero();
+  fbk_task_angular_vel_ = Eigen::Vector3d::Zero();
 
   // IK matrices
   jacobian_ = Eigen::MatrixXd::Zero(6, dim_joints_);
   J_linear_ = Eigen::MatrixXd::Zero(3, dim_joints_);
-  J_pinv_ = Eigen::MatrixXd::Zero(dim_joints_, 3);
+  J_task_ = Eigen::MatrixXd::Zero(6, dim_joints_);
+  J_linear_pinv_ = Eigen::MatrixXd::Zero(dim_joints_, 3);
+  J_task_pinv_ = Eigen::MatrixXd::Zero(dim_joints_, 6);
+  J_active_ = Eigen::MatrixXd::Zero(3, dim_joints_);
+  J_active_pinv_ = Eigen::MatrixXd::Zero(dim_joints_, 3);
 
   // Redundancy
   N_ = Eigen::MatrixXd::Identity(dim_joints_, dim_joints_);
   ref_joint_vel_ = Eigen::VectorXd::Zero(dim_joints_);
 
   // References / commands
-  ref_task_vel_ = Eigen::Vector3d::Zero();
+  ref_task_vel_.setZero();
   cmd_joint_vel_ = Eigen::VectorXd::Zero(dim_joints_);
 }
 
@@ -142,10 +153,12 @@ void KinematicController::jointStateCallback(const sensor_msgs::msg::JointState:
 
 void KinematicController::referenceTwistCallback(const geometry_msgs::msg::Twist::SharedPtr msg)
 {
-  // Translation-only task velocity(x_dot)
   ref_task_vel_[0] = msg->linear.x;
   ref_task_vel_[1] = msg->linear.y;
   ref_task_vel_[2] = msg->linear.z;
+  ref_task_vel_[3] = msg->angular.x;
+  ref_task_vel_[4] = msg->angular.y;
+  ref_task_vel_[5] = msg->angular.z;
 
   if (!first_twist_received_) {
     first_twist_received_ = true;
@@ -178,8 +191,8 @@ void KinematicController::computeForwardKinematics()
   //End-effector pose
   const pinocchio::SE3 pose_now = data_.oMi[hand_id_];
   fbk_task_pos_ = pose_now.translation();
-
-  //fbk_task_vel_ = data_.v[hand_id_].linear();
+  fbk_task_orientation_ = Eigen::Quaterniond(pose_now.rotation());
+  fbk_task_orientation_.normalize();
 }
 
 void KinematicController::computeJacobian()
@@ -191,9 +204,18 @@ void KinematicController::computeJacobian()
 
   // translation-only Jacobian: 3x7
   J_linear_ = jacobian_.topRows(3);
+  J_task_ = jacobian_;
 
-  // pseudo-inverse: 7x3
-  J_pinv_ = J_linear_.completeOrthogonalDecomposition().pseudoInverse();
+  J_linear_pinv_ = J_linear_.completeOrthogonalDecomposition().pseudoInverse();
+  J_task_pinv_ = J_task_.completeOrthogonalDecomposition().pseudoInverse();
+
+  if (control_orientation_) {
+    J_active_ = J_task_;
+    J_active_pinv_ = J_task_pinv_;
+  } else {
+    J_active_ = J_linear_;
+    J_active_pinv_ = J_linear_pinv_;
+  }
 
 }
 
@@ -202,12 +224,15 @@ void KinematicController::computeInverseKinematics()
   // Don’t compute/publish command until have both joint feedback and reference twist
   if (!first_joint_received_ || !first_twist_received_) return;
 
-  // Basic IK: qdot = J^+ * xdot_ref
-  cmd_joint_vel_ = J_pinv_ * ref_task_vel_;
+  if (control_orientation_) {
+    cmd_joint_vel_ = J_active_pinv_ * ref_task_vel_;
+  } else {
+    cmd_joint_vel_ = J_active_pinv_ * ref_task_vel_.head<3>();
+  }
 
   // Redundancy term: qdot += N * qdot_ref
   if (with_redundancy_ && first_joint_ref_received_) {
-    N_ = Eigen::MatrixXd::Identity(dim_joints_, dim_joints_) - (J_pinv_ * J_linear_);
+    N_ = Eigen::MatrixXd::Identity(dim_joints_, dim_joints_) - (J_active_pinv_ * J_active_);
     cmd_joint_vel_ += N_ * ref_joint_vel_;
   }
 
@@ -228,27 +253,27 @@ void KinematicController::publishFeedback()
   computeForwardKinematics();
   computeJacobian();
   fbk_task_vel_ = J_linear_ * joint_vel_;
+  fbk_task_angular_vel_ = jacobian_.bottomRows(3) * joint_vel_;
 
   // Publish pose feedback
   geometry_msgs::msg::Pose pose_msg;
   pose_msg.position.x = fbk_task_pos_[0];
   pose_msg.position.y = fbk_task_pos_[1];
   pose_msg.position.z = fbk_task_pos_[2];
-  // Orientation not controlled in this assignment; publish identity
-  pose_msg.orientation.w = 1.0;
-  pose_msg.orientation.x = 0.0;
-  pose_msg.orientation.y = 0.0;
-  pose_msg.orientation.z = 0.0;
+  pose_msg.orientation.x = fbk_task_orientation_.x();
+  pose_msg.orientation.y = fbk_task_orientation_.y();
+  pose_msg.orientation.z = fbk_task_orientation_.z();
+  pose_msg.orientation.w = fbk_task_orientation_.w();
   pose_pub_->publish(pose_msg);
 
-  // Publish twist feedback (linear)
+  // Publish twist feedback
   geometry_msgs::msg::Twist twist_msg;
   twist_msg.linear.x = fbk_task_vel_[0];
   twist_msg.linear.y = fbk_task_vel_[1];
   twist_msg.linear.z = fbk_task_vel_[2];
-  twist_msg.angular.x = 0.0;
-  twist_msg.angular.y = 0.0;
-  twist_msg.angular.z = 0.0;
+  twist_msg.angular.x = fbk_task_angular_vel_[0];
+  twist_msg.angular.y = fbk_task_angular_vel_[1];
+  twist_msg.angular.z = fbk_task_angular_vel_[2];
   twist_pub_->publish(twist_msg);
 
   // Compute/publish command at the same fixed rate

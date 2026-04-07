@@ -12,9 +12,10 @@
 #include <pinocchio/parsers/urdf.hpp>
 #include <pinocchio/algorithm/kinematics.hpp>
 #include <pinocchio/algorithm/jacobian.hpp>
-#include <pinocchio/algorithm/compute-all-terms.hpp>   
+#include <pinocchio/algorithm/compute-all-terms.hpp>
 
 #include <Eigen/Dense>
+#include <Eigen/Geometry>
 #include <string>
 
 class KinematicController : public rclcpp::Node
@@ -48,19 +49,26 @@ private:
   Eigen::VectorXd joint_pos_;
   Eigen::VectorXd joint_vel_;
   Eigen::Vector3d fbk_task_pos_;
+  Eigen::Quaterniond fbk_task_orientation_;
   Eigen::Vector3d fbk_task_vel_;
+  Eigen::Vector3d fbk_task_angular_vel_;
 
   // IK variables
-  Eigen::MatrixXd jacobian_;     // 6x7
-  Eigen::MatrixXd J_linear_;     // 3x7
-  Eigen::MatrixXd J_pinv_;       // 7x3
-  Eigen::Vector3d ref_task_vel_; // 3x1
-  Eigen::VectorXd cmd_joint_vel_;// 7x1
+  Eigen::MatrixXd jacobian_;       // 6xN
+  Eigen::MatrixXd J_linear_;       // 3xN
+  Eigen::MatrixXd J_task_;         // 6xN
+  Eigen::MatrixXd J_linear_pinv_;  // Nx3
+  Eigen::MatrixXd J_task_pinv_;    // Nx6
+  Eigen::MatrixXd J_active_;       // 3xN or 6xN
+  Eigen::MatrixXd J_active_pinv_;  // Nx3 or Nx6
+  Eigen::Matrix<double, 6, 1> ref_task_vel_;
+  Eigen::VectorXd cmd_joint_vel_;// Nx1
 
   // Redundancy (Step V)
-  Eigen::MatrixXd N_;            // 7x7 nullspace projector
-  Eigen::VectorXd ref_joint_vel_;// 7x1 reference from joint planner
-  bool with_redundancy_{false};  
+  Eigen::MatrixXd N_;            // NxN nullspace projector
+  Eigen::VectorXd ref_joint_vel_;// Nx1 reference from joint planner
+  bool with_redundancy_{false};
+  bool control_orientation_{false};
 
   // Flags
   bool first_joint_received_{false};

@@ -5,6 +5,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "action/PoseCommand.action"
   "srv/Move2d.srv"
   "srv/Move3d.srv"
   "srv/SetKD.srv"
