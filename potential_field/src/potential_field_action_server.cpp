@@ -32,7 +32,7 @@ public:
   {
     this->declare_parameter<double>("publish_rate", 500.0);
     this->declare_parameter<double>("k_att_linear", 5.0);
-    this->declare_parameter<double>("k_att_angular", 2.0);
+    this->declare_parameter<double>("k_att_angular", 5.0);
     this->declare_parameter<double>("maximum_linear_velocity", 1.0);
     this->declare_parameter<double>("maximum_angular_velocity", 1.5);
 
@@ -133,9 +133,6 @@ private:
 
     Eigen::Quaterniond quaternion_error = target_orientation * current_orientation.conjugate();
     quaternion_error.normalize();
-    if (quaternion_error.w() < 0.0) {
-      quaternion_error.coeffs() *= -1.0;
-    }
 
     const double angle = current_orientation.angularDistance(target_orientation);
     distance_orientation = angle;
@@ -143,8 +140,8 @@ private:
     Eigen::Vector3d angular_velocity = Eigen::Vector3d::Zero();
     if (angle > 1e-6) {
       const Eigen::AngleAxisd angle_axis(quaternion_error);
-      angular_velocity = k_att_angular_ * angle_axis.angle() * angle_axis.axis();
-      angular_velocity = saturateVector(angular_velocity, max_angular_velocity_);
+      const double sign = (target_orientation.dot(current_orientation) < 0.0) ? -1.0 : 1.0;
+      angular_velocity = sign * k_att_angular_ * angle_axis.angle() * angle_axis.axis();
     }
 
     geometry_msgs::msg::Twist twist_msg;
