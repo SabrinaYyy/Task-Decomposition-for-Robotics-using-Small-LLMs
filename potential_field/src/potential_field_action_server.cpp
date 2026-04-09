@@ -34,7 +34,7 @@ public:
     this->declare_parameter<double>("k_att_linear", 5.0);
     this->declare_parameter<double>("k_att_angular", 5.0);
     this->declare_parameter<double>("maximum_linear_velocity", 1.0);
-    this->declare_parameter<double>("maximum_angular_velocity", 1.5);
+    this->declare_parameter<double>("maximum_angular_velocity", 1.0);
 
     this->get_parameter("publish_rate", publish_rate_);
     this->get_parameter("k_att_linear", k_att_linear_);
@@ -142,6 +142,7 @@ private:
       const Eigen::AngleAxisd angle_axis(quaternion_error);
       const double sign = (target_orientation.dot(current_orientation) < 0.0) ? -1.0 : 1.0;
       angular_velocity = sign * k_att_angular_ * angle_axis.angle() * angle_axis.axis();
+      angular_velocity = saturateVector(angular_velocity, max_angular_velocity_);
     }
 
     geometry_msgs::msg::Twist twist_msg;
@@ -374,9 +375,9 @@ private:
 
   double publish_rate_{500.0};
   double k_att_linear_{5.0};
-  double k_att_angular_{2.0};
+  double k_att_angular_{5.0};
   double max_linear_velocity_{1.0};
-  double max_angular_velocity_{1.5};
+  double max_angular_velocity_{1.0};
 };
 
 int main(int argc, char ** argv)

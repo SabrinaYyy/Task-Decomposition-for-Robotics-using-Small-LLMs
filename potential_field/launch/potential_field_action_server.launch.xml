@@ -1,5 +1,10 @@
 <launch>
   <node pkg="potential_field" exec="potential_field_action_server" name="potential_field_action_server" output="screen">
-    <param name="use_sim_time" value="false"/>
+    <param name="use_sim_time" value="true"/>
+    <param name="publish_rate" value="500.0"/>
+    <param name="k_att_linear" value="5.0"/>
+    <param name="k_att_angular" value="5.0"/>
+    <param name="maximum_linear_velocity" value="1.0"/>
+    <param name="maximum_angular_velocity" value="1.0"/>
   </node>
 </launch>
