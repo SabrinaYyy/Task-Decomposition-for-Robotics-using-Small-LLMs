@@ -3,9 +3,9 @@
 <package format="3">
   <name>highlevel_interfaces</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>ROS 2 action and service definitions for the Gen3 manipulator control pipeline</description>
   <maintainer email="xyan31@mimi.cs.mcgill.ca">sabrina</maintainer>
-  <license>TODO: License declaration</license>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <depend>ament_cmake_ros</depend>

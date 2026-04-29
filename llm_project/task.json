@@ -1,0 +1,8 @@
+{
+  "step_1": {
+    "action": "close_gripper",
+    "object_a": null,
+    "object_b": null,
+    "spatial_relation": null
+  }
+}

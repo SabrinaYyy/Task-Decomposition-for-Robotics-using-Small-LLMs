@@ -42,15 +42,21 @@ public:
     this->get_parameter("maximum_linear_velocity", max_linear_velocity_);
     this->get_parameter("maximum_angular_velocity", max_angular_velocity_);
 
+    // I read the controller feedback pose so the action server can measure
+    // progress toward each move_pose goal.
     pose_sub_ = this->create_subscription<geometry_msgs::msg::Pose>(
       "/gen3/feedback/pose",
       10,
       std::bind(&PotentialFieldActionServer::poseCallback, this, std::placeholders::_1));
 
+    // I publish the task-space twist that the kinematic controller turns into
+    // joint velocity commands.
     twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
       "/gen3/reference/twist",
       10);
 
+    // I keep publishing toward the current target at a fixed rate, while the
+    // action thread only watches for success/cancel/timeout.
     timer_ = rclcpp::create_timer(
       this->get_node_base_interface(),
       this->get_node_timers_interface(),
@@ -106,6 +112,7 @@ private:
 
   bool isGoalWithinBounds(const PoseCommand::Goal & goal) const
   {
+    // I reject clearly unsafe/unreachable requests before they can command the arm.
     const bool xy_ok =
       (goal.x >= -0.8 && goal.x <= 0.8) &&
       (goal.y >= -0.8 && goal.y <= 0.8);
@@ -126,11 +133,15 @@ private:
     double & distance_translation,
     double & distance_orientation) const
   {
+    // I use a simple attractive field: velocity points from the current pose
+    // toward the target pose and is saturated for stability.
     const Eigen::Vector3d position_error = target_position - current_position;
     Eigen::Vector3d linear_velocity = k_att_linear_ * position_error;
     linear_velocity = saturateVector(linear_velocity, max_linear_velocity_);
     distance_translation = position_error.norm();
 
+    // In 6D mode, I also turn the orientation error into an angular command.
+    // In the final demo the controller ignores angular rows because I use 3D mode.
     Eigen::Quaterniond quaternion_error = target_orientation * current_orientation.conjugate();
     quaternion_error.normalize();
 
@@ -178,11 +189,13 @@ private:
       return rclcpp_action::GoalResponse::REJECT;
     }
 
-    std::lock_guard<std::mutex> lock(mutex_);
-    if (has_active_goal_) {
-      RCLCPP_WARN(this->get_logger(), "Rejected action goal: another goal is still active");
-      return rclcpp_action::GoalResponse::REJECT;
-    }
+    // I allow a new goal to preempt the old one, which makes sequential executor
+    // commands more forgiving if a previous goal is still winding down.
+    // std::lock_guard<std::mutex> lock(mutex_);
+    // if (has_active_goal_) {
+    //   RCLCPP_WARN(this->get_logger(), "Rejected action goal: another goal is still active");
+    //   return rclcpp_action::GoalResponse::REJECT;
+    // }
 
     RCLCPP_INFO(
       this->get_logger(),
@@ -204,12 +217,16 @@ private:
     const auto goal = goal_handle->get_goal();
     {
       std::lock_guard<std::mutex> lock(mutex_);
+      active_goal_handle_ = goal_handle;  // I treat the latest accepted goal as active.
       has_active_goal_ = true;
       active_goal_start_time_ = this->get_clock()->now();
+      // Once the goal is accepted, I update the target that the timer publishes toward.
       target_position_ = Eigen::Vector3d(goal->x, goal->y, goal->z);
       target_orientation_ = rpyToQuaternion(goal->roll, goal->pitch, goal->yaw);
     }
 
+    // I execute the action in a background thread so ROS callbacks and twist
+    // publication keep running while the action waits for convergence.
     std::thread(
       std::bind(&PotentialFieldActionServer::executeAction, this, std::placeholders::_1),
       goal_handle).detach();
@@ -226,6 +243,17 @@ private:
 
     rclcpp::Rate rate(50.0);
     while (rclcpp::ok()) {
+      // If a newer goal has been accepted, I abort this older one cleanly.
+      {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (active_goal_handle_ != goal_handle) {
+          result->success = false;
+          result->message = "Preempted by newer goal";
+          goal_handle->abort(result);
+          return;
+        }
+      }
+
       if (goal_handle->is_canceling()) {
         result->success = false;
         result->message = "Goal canceled";
@@ -233,7 +261,7 @@ private:
         setDefaultTarget();
 
         std::lock_guard<std::mutex> lock(mutex_);
-        has_active_goal_ = false;
+        if (active_goal_handle_ == goal_handle) has_active_goal_ = false;
         return;
       }
 
@@ -265,6 +293,8 @@ private:
         distance_translation,
         distance_orientation);
 
+      // The timer publishes the twist continuously; here I only compute the
+      // distance values that go into feedback/result.
       (void)twist_msg;
 
       const double time_elapsed = (this->get_clock()->now() - start_time).seconds();
@@ -274,24 +304,24 @@ private:
       feedback->time_elapsed = time_elapsed;
       goal_handle->publish_feedback(feedback);
 
-      if (distance_translation < 0.05 && distance_orientation < 0.1) {
+      if (distance_translation < 0.04) {
         result->success = true;
         result->message = "Goal reached";
         goal_handle->succeed(result);
 
         std::lock_guard<std::mutex> lock(mutex_);
-        has_active_goal_ = false;
+        if (active_goal_handle_ == goal_handle) has_active_goal_ = false;
         return;
       }
 
-      if (time_elapsed > 5.0) {
+      if (time_elapsed > 30.0) {
         result->success = false;
         result->message = "Goal aborted after timeout";
         goal_handle->abort(result);
         setDefaultTarget();
 
         std::lock_guard<std::mutex> lock(mutex_);
-        has_active_goal_ = false;
+        if (active_goal_handle_ == goal_handle) has_active_goal_ = false;
         return;
       }
 
@@ -329,6 +359,7 @@ private:
     Eigen::Quaterniond current_orientation;
     Eigen::Quaterniond target_orientation;
     bool feedback_ready = false;
+    bool goal_active = false;
 
     {
       std::lock_guard<std::mutex> lock(mutex_);
@@ -337,9 +368,13 @@ private:
       target_position = target_position_;
       target_orientation = target_orientation_;
       feedback_ready = first_feedback_received_;
+      goal_active = has_active_goal_;
     }
 
-    if (!feedback_ready) {
+    // Always publish something so kinematic_controller's first_twist_received_
+    // gate is satisfied, but only servo toward the target when a goal is active.
+    if (!feedback_ready || !goal_active) {
+      twist_pub_->publish(geometry_msgs::msg::Twist{});
       return;
     }
 
@@ -365,6 +400,7 @@ private:
 
   bool first_feedback_received_;
   bool has_active_goal_;
+  std::shared_ptr<GoalHandlePoseCommand> active_goal_handle_;
 
   Eigen::Vector3d current_position_;
   Eigen::Vector3d target_position_;

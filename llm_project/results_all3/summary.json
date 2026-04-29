@@ -1,0 +1,92 @@
+{
+  "smollm2_zero": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 1.8571428571428572,
+    "action_fp": 0.42857142857142855,
+    "action_fn": 1.1428571428571428,
+    "action_precision": 0.7857142857142857,
+    "action_recall": 0.7142857142857143,
+    "action_f1": 0.7142857142857144
+  },
+  "smollm2_one": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 2.857142857142857,
+    "action_fp": 0.7142857142857143,
+    "action_fn": 0.14285714285714285,
+    "action_precision": 0.7738095238095238,
+    "action_recall": 0.9285714285714286,
+    "action_f1": 0.8285714285714286
+  },
+  "smollm2_few": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 2.2857142857142856,
+    "action_fp": 0.14285714285714285,
+    "action_fn": 0.7142857142857143,
+    "action_precision": 0.9285714285714286,
+    "action_recall": 0.8214285714285714,
+    "action_f1": 0.8639455782312925
+  },
+  "qwen_zero": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 1.7142857142857142,
+    "action_fp": 1.1428571428571428,
+    "action_fn": 1.2857142857142858,
+    "action_precision": 0.7119047619047618,
+    "action_recall": 0.6428571428571429,
+    "action_f1": 0.6553287981859411
+  },
+  "qwen_one": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 2.142857142857143,
+    "action_fp": 0.2857142857142857,
+    "action_fn": 0.8571428571428571,
+    "action_precision": 0.8571428571428571,
+    "action_recall": 0.7857142857142857,
+    "action_f1": 0.8095238095238094
+  },
+  "qwen_few": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 2.142857142857143,
+    "action_fp": 0.2857142857142857,
+    "action_fn": 0.8571428571428571,
+    "action_precision": 0.8571428571428571,
+    "action_recall": 0.7857142857142857,
+    "action_f1": 0.8095238095238094
+  },
+  "llama_zero": {
+    "n_tasks": 7,
+    "json_rate": 0.8571428571428571,
+    "action_tp": 1.0,
+    "action_fp": 1.4285714285714286,
+    "action_fn": 2.0,
+    "action_precision": 0.4928571428571429,
+    "action_recall": 0.42857142857142855,
+    "action_f1": 0.4399092970521542
+  },
+  "llama_one": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 2.857142857142857,
+    "action_fp": 0.7142857142857143,
+    "action_fn": 0.14285714285714285,
+    "action_precision": 0.8214285714285714,
+    "action_recall": 0.9285714285714286,
+    "action_f1": 0.8571428571428573
+  },
+  "llama_few": {
+    "n_tasks": 7,
+    "json_rate": 1.0,
+    "action_tp": 1.7142857142857142,
+    "action_fp": 1.4285714285714286,
+    "action_fn": 1.2857142857142858,
+    "action_precision": 0.6071428571428571,
+    "action_recall": 0.6428571428571429,
+    "action_f1": 0.6153061224489795
+  }
+}

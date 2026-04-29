@@ -60,11 +60,9 @@ public:
 
     auto qos = rclcpp::QoS(rclcpp::KeepLast(10));
 
-    // Sub
     joint_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
       "/joint_states", qos, std::bind(&PotentialFieldJoint::joint_callback, this, _1));
 
-    // Pubs (A3 + A4)
     joint_vel_pub_a3_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
       "/planner/joint_velocity", qos);
     joint_pos_pub_a5_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
@@ -138,13 +136,14 @@ private:
 
   void update()
   {
-    // Keep /gen3/reference/position available at all times for A5.
+    // Keep the planner outputs well-defined until the first valid joint feedback arrives.
     if (!have_joint_) {
       publish_planner_zero_and_done_true();
       return;
     }
 
-    // Compute qdot toward default (potential field)
+    // A4 redundancy planner: move the arm toward a default posture in joint space.
+    // This implements qdot_ref = k_att (q_default - q) with per-joint saturation.
     bool all_within = true;
 
     for (size_t i = 0; i < DOF; ++i) {
@@ -156,8 +155,7 @@ private:
       const double lim = std::fabs(vmax_[i]);
       qdot = clamp(qdot, -lim, lim);
 
-      // If want A3(only move when homing_active_), apply here:
-      // For A4 can just always move; keeping for future reuse.
+      // Reuse the older A3 homing gate so this node stays backward compatible.
       if (!homing_active_) qdot = 0.0;
 
       joint_vel_msg_.data[i] = qdot;
@@ -171,11 +169,13 @@ private:
       for (size_t i = 0; i < DOF; ++i) joint_vel_msg_.data[i] = 0.0;
     }
 
-    // q_ref is the look-ahead: current joint position integrated one step forward.
+    // Later assignments also use a one-step-ahead joint reference position.
     for (size_t i = 0; i < DOF; ++i) {
       joint_pos_msg_.data[i] = q_[i] + joint_vel_msg_.data[i] / publish_rate_;
     }
 
+    // For A4, the main output is /gen3/reference/velocity, which is added in the
+    // null space by the kinematic controller when redundancy is enabled.
     joint_vel_pub_a3_->publish(joint_vel_msg_);
     joint_pos_pub_a5_->publish(joint_pos_msg_);
     done_pub_->publish(done_msg_);
@@ -199,7 +199,6 @@ private:
     return std::max(lo, std::min(v, hi));
   }
 
-  //ros interfaces
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_sub_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_vel_pub_a3_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr joint_pos_pub_a5_;

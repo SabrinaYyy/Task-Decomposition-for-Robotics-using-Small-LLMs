@@ -1,12 +1,20 @@
 <launch>
+  <!-- I use this launch file for the final demo because 3D position control was
+       more stable than full 6D orientation control for the pick-and-place tasks. -->
   <node pkg="kinematic_controller" exec="kinematic_controller" name="kinematic_controller" output="screen">
+    <!-- I use the Gen3 URDF from kortex_description so Pinocchio can compute
+         forward kinematics and the Jacobian for the arm. -->
     <param name="urdf_file_name" value="$(find-pkg-share kortex_description)/robots/gen3.urdf"/>
     <param name="use_sim_time" value="true"/>
     <param name="publish_rate" value="500.0"/>
-    <param name="with_redundancy" value="true"/>
+    <!-- I turn redundancy off here because the null-space posture controller
+         fought the task-space motion in my tests. -->
+    <param name="with_redundancy" value="false"/>
+    <!-- I only need Cartesian position targets for the required tasks. -->
     <param name="control_orientation" value="false"/>
   </node>
 
-  <include file="$(find-pkg-share potential_field)/launch/potential_field_task.launch.xml"/>
-  <include file="$(find-pkg-share potential_field)/launch/potential_field_joint.launch.xml"/>
+  <!-- This starts /planner/move_pose, which is the action the JSON executor
+       calls for every move_pose step. -->
+  <include file="$(find-pkg-share potential_field)/launch/potential_field_action_server.launch.xml"/>
 </launch>

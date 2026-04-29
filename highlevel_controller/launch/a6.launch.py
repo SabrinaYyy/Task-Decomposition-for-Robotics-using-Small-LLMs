@@ -18,6 +18,8 @@ def generate_launch_description():
             default_value="true",
             description="Use 6D pose control when true, or 3D position-only control when false.",
         ),
+        # Reuse the same controller node in two modes by switching which launch
+        # file is included from the top-level A6 launch.
         IncludeLaunchDescription(
             AnyLaunchDescriptionSource(
                 os.path.join(kinematic_controller_share, "launch", "3d.launch.xml")

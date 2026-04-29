@@ -1,0 +1,12 @@
+{
+  "llama_zero": {
+    "n_tasks": 1,
+    "json_rate": 1.0,
+    "action_tp": 2.0,
+    "action_fp": 1.0,
+    "action_fn": 2.0,
+    "action_precision": 0.6666666666666666,
+    "action_recall": 0.5,
+    "action_f1": 0.5714285714285715
+  }
+}

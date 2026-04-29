@@ -1,0 +1,2030 @@
+[
+  {
+    "model": "smollm2",
+    "shot": "zero",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "zero",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"left\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": \"left_of_blue_bowl\",\n    \"spatial_relation\": \"left\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "left_of_blue_bowl",
+        "spatial_relation": "left"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "zero",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"top\"\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"top\"\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_block\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"top\"\n  },\n  \"step_4\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"top\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "top"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "top"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_block",
+        "object_b": "yellow_block",
+        "spatial_relation": "top"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "top"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "zero",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue bowl\",\n    \"object_b\": \"green bowl\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green bowl\",\n    \"object_b\": null\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "blue bowl",
+        "object_b": "green bowl"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green bowl",
+        "object_b": null
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "zero",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green bowl\",\n    \"object_b\": \"yellow block\",\n    \"spatial_relation\": \"next to\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green bowl\",\n    \"object_b\": \"yellow block\",\n    \"spatial_relation\": \"next to\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "green bowl",
+        "object_b": "yellow block",
+        "spatial_relation": "next to"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green bowl",
+        "object_b": "yellow block",
+        "spatial_relation": "next to"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "one",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"blue_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"blue_block\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\", \"spatial_relation\": \"above\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "above"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "one",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"green_cube\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"green_cube\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"green_cube\", \"object_b\": \"left_of_blue_bowl\", \"spatial_relation\": \"left\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"green_cube\", \"object_b\": \"left_of_blue_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_cube",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_cube",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "left_of_blue_bowl",
+        "spatial_relation": "left"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green_cube",
+        "object_b": "left_of_blue_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "one",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"yellow_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"yellow_block\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"yellow_block\", \"object_b\": \"green_block\",  \"spatial_relation\": \"above\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"yellow_block\", \"object_b\": \"green_block\",  \"spatial_relation\": \"on top of\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "above"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on top of"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "one",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"blue_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"blue_bowl\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"blue_bowl\", \"object_b\": \"green_bowl\", \"spatial_relation\": \"behind\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"blue_bowl\", \"object_b\": \"green_bowl\", \"spatial_relation\": \"behind\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_bowl",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_bowl",
+        "object_b": "green_bowl",
+        "spatial_relation": "behind"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_bowl",
+        "object_b": "green_bowl",
+        "spatial_relation": "behind"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.25,
+      "recall": 0.5,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "one",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"green_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"green_bowl\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"green_bowl\", \"object_b\": \"yellow_block\", \"spatial_relation\": \"next to\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"green_bowl\", \"object_b\": \"yellow_block\", \"spatial_relation\": \"next to\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next to"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next to"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "few",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,          \"object_b\": \"blue_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"blue_block\", \"object_b\": null,            \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\", \"spatial_relation\": \"above\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "above"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "few",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,          \"object_b\": \"green_cube\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"green_cube\", \"object_b\": \"left_of_blue_bowl\", \"spatial_relation\": \"to\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_cube",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "left_of_blue_bowl",
+        "spatial_relation": "to"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "few",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,          \"object_b\": \"yellow_block\", \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"yellow_block\", \"object_b\": null,            \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"yellow_block\", \"object_b\": \"green_block\",  \"spatial_relation\": \"on top of\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on top of"
+      }
+    },
+    "action_metrics": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571428571428571
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "few",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,          \"object_b\": \"blue_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"blue_bowl\",  \"object_b\": \"green_block\", \"spatial_relation\": \"behind\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "blue_bowl",
+        "object_b": "green_block",
+        "spatial_relation": "behind"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "smollm2",
+    "shot": "few",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,          \"object_b\": \"green_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"green_bowl\", \"object_b\": null,            \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"green_bowl\", \"object_b\": \"yellow_block\", \"spatial_relation\": \"next_to\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571428571428571
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "zero",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "zero",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"left\"\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"green_cube\"\n  },\n  \"step_3\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"green_cube\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_cube"
+      },
+      "step_3": {
+        "action": "open_gripper",
+        "object_a": "green_cube"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 2,
+      "precision": 0.6666666666666666,
+      "recall": 0.5,
+      "f1": 0.5714285714285715
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "zero",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"above\"\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"on_top_of\"\n  },\n  \"step_3\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"on_top_of\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_block",
+        "spatial_relation": "above"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on_top_of"
+      },
+      "step_3": {
+        "action": "open_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on_top_of"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 2,
+      "precision": 0.6666666666666666,
+      "recall": 0.5,
+      "f1": 0.5714285714285715
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "zero",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_bowl\",\n    \"object_b\": \"green_bowl\",\n    \"spatial_relation\": \"behind\"\n  },\n  \"step_2\": {\n    \"action\": \"open_gripper\"\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_bowl\",\n    \"object_b\": \"destination\",\n    \"spatial_relation\": \"behind\"\n  },\n  \"step_4\": {\n    \"action\": \"close_gripper\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "blue_bowl",
+        "object_b": "green_bowl",
+        "spatial_relation": "behind"
+      },
+      "step_2": {
+        "action": "open_gripper"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_bowl",
+        "object_b": "destination",
+        "spatial_relation": "behind"
+      },
+      "step_4": {
+        "action": "close_gripper"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.25,
+      "recall": 0.5,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "zero",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"next_to\"\n  },\n  \"step_2\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"green_bowl\"\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"destination\",\n    \"spatial_relation\": \"next_to\"\n  },\n  \"step_4\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"green_bowl\"\n  },\n  \"step_5\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"next_to\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      },
+      "step_2": {
+        "action": "open_gripper",
+        "object_a": "green_bowl"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "destination",
+        "spatial_relation": "next_to"
+      },
+      "step_4": {
+        "action": "close_gripper",
+        "object_a": "green_bowl"
+      },
+      "step_5": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 3,
+      "fn": 2,
+      "precision": 0.4,
+      "recall": 0.5,
+      "f1": 0.4444444444444445
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "one",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": null\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": null,\n    \"spatial_relation\": null\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_4\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "one",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"green_cube\",\n    \"spatial_relation\": null\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"left\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_cube",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "one",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": null\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": null,\n    \"spatial_relation\": null\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_block\",\n    \"object_b\": null,\n    \"spatial_relation\": null\n  },\n  \"step_4\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"on_top\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on_top"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "one",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"green_bowl\",\n    \"spatial_relation\": \"behind\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"behind\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": "behind"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "blue_bowl",
+        "spatial_relation": "behind"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "one",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"green_bowl\",\n    \"spatial_relation\": null\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"next_to\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "few",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"above\"\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": null,\n    \"spatial_relation\": null\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_4\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"in\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_bowl",
+        "spatial_relation": "above"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "few",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"green_cube\",\n    \"spatial_relation\": null\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"left\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_cube",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "few",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": null\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": null,\n    \"spatial_relation\": null\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"on_top\"\n  },\n  \"step_4\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"off\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on_top"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "off"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "few",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"behind\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_bowl\",\n    \"object_b\": \"green_bowl\",\n    \"spatial_relation\": \"behind\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_bowl",
+        "spatial_relation": "behind"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "blue_bowl",
+        "object_b": "green_bowl",
+        "spatial_relation": "behind"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "qwen",
+    "shot": "few",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": null,\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"next_to\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"next_to\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "zero",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "I can decompose the instruction into a sequence of robot actions. Here's the step-by-step breakdown:\n\n1. Move the yellow bowl to a position where the blue block is closest to it.\n2. Close the gripper on the blue block.\n3. Move the blue block into the yellow bowl.\n\nHere's the JSON representation of the sequence:\n\n```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"yellow_bowl\",\n    \"object_b\": \"blue_block\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_3\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "yellow_bowl",
+        "object_b": "blue_block",
+        "spatial_relation": "inside"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      },
+      "step_3": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 2,
+      "fn": 3,
+      "precision": 0.3333333333333333,
+      "recall": 0.25,
+      "f1": 0.28571428571428575
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "zero",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "Here is the sequence of robot actions to accomplish the instruction:\n\n```\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"left\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": null,\n    \"spatial_relation\": \"left\"\n  },\n  \"step_3\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": null,\n    \"spatial_relation\": null\n  },\n  \"step_4\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_cube\",\n    \"object_b\": \"blue_bowl\",\n    \"spatial_relation\": \"left\"\n  }\n}\n```\n\nThis sequence of actions moves the green cube to the left of the blue bowl.",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": null,
+        "spatial_relation": "left"
+      },
+      "step_3": {
+        "action": "close_gripper",
+        "object_a": "green_cube",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_4": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 3,
+      "precision": 0.25,
+      "recall": 0.25,
+      "f1": 0.25
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "zero",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "I can decompose the instruction into a sequence of robot actions. Here's the step-by-step breakdown:\n\n1. Place the green block on top of the yellow block.\n\nSince the instruction requires placing the yellow block on top of the green block, I will use the `move_pose` action to move the yellow block to the top position relative to the green block.\n\n```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_block\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"on top of\"\n  }\n}\n```\n\n2. Place the yellow block on top of the green block.\n\nTo place the yellow block on top of the green block, I will use the `move_pose` action again, this time to move the yellow block to the top position relative to the green block.\n\n```json\n{\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_block\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"on top of\"\n  }\n}\n```\n\nSince the instruction does not require any further actions, the final output is:\n\n```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_block\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"on top of\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_block\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"on top of\"\n  }\n}\n```",
+    "parsed_json": null,
+    "action_metrics": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "zero",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "Here is the sequence of robot actions:\n\n```\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue bowl\",\n    \"object_b\": \"green bowl\",\n    \"spatial_relation\": \"behind\"\n  },\n  \"step_2\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"blue bowl\",\n    \"object_b\": \"null\",\n    \"spatial_relation\": \"null\"\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green bowl\",\n    \"object_b\": \"null\",\n    \"spatial_relation\": \"null\"\n  },\n  \"step_4\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"green bowl\",\n    \"object_b\": \"null\",\n    \"spatial_relation\": \"null\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "blue bowl",
+        "object_b": "green bowl",
+        "spatial_relation": "behind"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue bowl",
+        "object_b": "null",
+        "spatial_relation": "null"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green bowl",
+        "object_b": "null",
+        "spatial_relation": "null"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green bowl",
+        "object_b": "null",
+        "spatial_relation": "null"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.25,
+      "recall": 0.5,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "zero",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "I can decompose the instruction into a sequence of robot actions. Here's the step-by-step breakdown:\n\n1. Move the yellow block to a position where it is in front of the green bowl.\n2. Close the gripper on the green bowl.\n3. Move the green bowl to the position where it is next to the yellow block.\n\nHere's the JSON representation of the sequence:\n\n```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_bowl\",\n    \"spatial_relation\": \"in_front_of\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"next_to\"\n  },\n  \"step_3\": {\n    \"action\": \"close_gripper\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"null\",\n    \"spatial_relation\": null\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "yellow_block",
+        "object_b": "green_bowl",
+        "spatial_relation": "in_front_of"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      },
+      "step_3": {
+        "action": "close_gripper",
+        "object_a": "green_bowl",
+        "object_b": "null",
+        "spatial_relation": null
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 2,
+      "fn": 3,
+      "precision": 0.3333333333333333,
+      "recall": 0.25,
+      "f1": 0.28571428571428575
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "one",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"blue_block\", \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\", \"object_a\": \"blue_block\", \"object_b\": null, \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\", \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\", \"spatial_relation\": \"above\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "above"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "one",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"green_cube\", \"spatial_relation\": \"below\"},\n  \"step_2\": {\"action\": \"close_gripper\", \"object_a\": \"green_cube\", \"object_b\": null, \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\", \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"above\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_cube",
+        "spatial_relation": "below"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_cube",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "above"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "one",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"green_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"green_block\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"green_block\", \"object_b\": \"yellow_block\",  \"spatial_relation\": \"above\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"green_block\", \"object_b\": \"yellow_block\",  \"spatial_relation\": \"on\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_block",
+        "object_b": "yellow_block",
+        "spatial_relation": "above"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green_block",
+        "object_b": "yellow_block",
+        "spatial_relation": "on"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "one",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"green_bowl\", \"spatial_relation\": \"in\"},\n  \"step_2\": {\"action\": \"close_gripper\", \"object_a\": \"green_bowl\", \"object_b\": null, \"spatial_relation\": \"in\"},\n  \"step_3\": {\"action\": \"move_pose\", \"object_a\": \"green_bowl\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"behind\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"green_bowl\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": "in"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": "in"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "blue_bowl",
+        "spatial_relation": "behind"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green_bowl",
+        "object_b": "blue_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.25,
+      "recall": 0.5,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "one",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"green_bowl\", \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\", \"object_a\": \"green_bowl\", \"object_b\": null, \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\", \"object_a\": \"green_bowl\", \"object_b\": \"yellow_block\", \"spatial_relation\": \"next_to\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571428571428571
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "few",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"blue_block\", \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\", \"object_a\": \"blue_block\", \"object_b\": null, \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\", \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\", \"spatial_relation\": \"into\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "into"
+      }
+    },
+    "action_metrics": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571428571428571
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "few",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"left_of\"},\n  \"step_2\": {\"action\": \"close_gripper\", \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"above\"},\n  \"step_3\": {\"action\": \"move_pose\", \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left_of"
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "above"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 1,
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1": 0.8571428571428571
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "few",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"green_block\", \"spatial_relation\": \"above\"},\n  \"step_2\": {\"action\": \"move_pose\", \"object_a\": \"green_block\", \"object_b\": null, \"spatial_relation\": \"above\"},\n  \"step_3\": {\"action\": \"close_gripper\", \"object_a\": \"green_block\", \"object_b\": null, \"spatial_relation\": \"above\"},\n  \"step_4\": {\"action\": \"move_pose\", \"object_a\": \"yellow_block\", \"object_b\": \"green_block\", \"spatial_relation\": \"on top of\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_block",
+        "spatial_relation": "above"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_block",
+        "object_b": null,
+        "spatial_relation": "above"
+      },
+      "step_3": {
+        "action": "close_gripper",
+        "object_a": "green_block",
+        "object_b": null,
+        "spatial_relation": "above"
+      },
+      "step_4": {
+        "action": "move_pose",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on top of"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 3,
+      "precision": 0.25,
+      "recall": 0.25,
+      "f1": 0.25
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "few",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"green_bowl\", \"spatial_relation\": \"behind\"},\n  \"step_2\": {\"action\": \"move_pose\", \"object_a\": \"green_bowl\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"behind\"},\n  \"step_3\": {\"action\": \"close_gripper\", \"object_a\": \"green_bowl\", \"object_b\": \"blue_bowl\", \"spatial_relation\": \"in\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"blue_bowl\", \"object_b\": \"green_bowl\", \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": "behind"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "blue_bowl",
+        "spatial_relation": "behind"
+      },
+      "step_3": {
+        "action": "close_gripper",
+        "object_a": "green_bowl",
+        "object_b": "blue_bowl",
+        "spatial_relation": "in"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_bowl",
+        "object_b": "green_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 2,
+      "fn": 0,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666
+    }
+  },
+  {
+    "model": "llama",
+    "shot": "few",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\", \"object_a\": null, \"object_b\": \"yellow_block\", \"spatial_relation\": \"next_to\"},\n  \"step_2\": {\"action\": \"move_pose\", \"object_a\": \"green_bowl\", \"object_b\": null, \"spatial_relation\": \"next_to\"},\n  \"step_3\": {\"action\": \"close_gripper\", \"object_a\": \"green_bowl\", \"object_b\": null, \"spatial_relation\": null},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"green_bowl\", \"object_b\": null, \"spatial_relation\": null}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": "next_to"
+      },
+      "step_3": {
+        "action": "close_gripper",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": null
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "zero",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose(yellow_bowl, blue_block)\",\n    \"object_a\": \"yellow_bowl\",\n    \"object_b\": \"blue_block\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose(blue_block, yellow_bowl)\",\n    \"object_a\": \"blue_block\",\n    \"object_b\": \"yellow_bowl\",\n    \"spatial_relation\": \"inside\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose(yellow_bowl, blue_block)",
+        "object_a": "yellow_bowl",
+        "object_b": "blue_block",
+        "spatial_relation": "inside"
+      },
+      "step_2": {
+        "action": "move_pose(blue_block, yellow_bowl)",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      }
+    },
+    "action_metrics": {
+      "tp": 0,
+      "fp": 2,
+      "fn": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "zero",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green cube\",\n    \"object_b\": \"blue bowl\",\n    \"spatial_relation\": \"left of\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green cube\",\n    \"destination\": \"left of the blue bowl\",\n    \"spatial_relation\": \"left of\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "green cube",
+        "object_b": "blue bowl",
+        "spatial_relation": "left of"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green cube",
+        "destination": "left of the blue bowl",
+        "spatial_relation": "left of"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "zero",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose(yellow_block, top_of_green_block)\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_block\",\n    \"spatial_relation\": \"above\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose(green_block, bottom_of_yellow_block)\",\n    \"object_a\": \"green_block\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"above\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose(yellow_block, top_of_green_block)",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "above"
+      },
+      "step_2": {
+        "action": "move_pose(green_block, bottom_of_yellow_block)",
+        "object_a": "green_block",
+        "object_b": "yellow_block",
+        "spatial_relation": "above"
+      }
+    },
+    "action_metrics": {
+      "tp": 0,
+      "fp": 2,
+      "fn": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "zero",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"blue bowl\",\n    \"object_b\": \"green bowl\",\n    \"spatial_relation\": \"behind\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"green bowl\",\n    \"object_b\": \"blue bowl\",\n    \"spatial_relation\": \"behind\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "blue bowl",
+        "object_b": "green bowl",
+        "spatial_relation": "behind"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green bowl",
+        "object_b": "blue bowl",
+        "spatial_relation": "behind"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "zero",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\n    \"action\": \"move_pose(green_bowl, yellow_block)\",\n    \"object_a\": \"green_bowl\",\n    \"object_b\": \"yellow_block\",\n    \"spatial_relation\": \"next_to\"\n  },\n  \"step_2\": {\n    \"action\": \"move_pose(yellow_block, green_bowl)\",\n    \"object_a\": \"yellow_block\",\n    \"object_b\": \"green_bowl\",\n    \"spatial_relation\": \"next_to\"\n  }\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose(green_bowl, yellow_block)",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      },
+      "step_2": {
+        "action": "move_pose(yellow_block, green_bowl)",
+        "object_a": "yellow_block",
+        "object_b": "green_bowl",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 0,
+      "fp": 2,
+      "fn": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "one",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"blue_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"open_gripper\", \"object_a\": \"blue_block\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\",  \"spatial_relation\": \"in\"},\n  \"step_4\": {\"action\": \"close_gripper\", \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\",  \"spatial_relation\": \"in\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "open_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "in"
+      },
+      "step_4": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "in"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "one",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"green_cube\",  \"spatial_relation\": \"left_of\"},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\",  \"spatial_relation\": \"left_of\"},\n  \"step_3\": {\"action\": \"close_gripper\", \"object_a\": \"green_cube\", \"object_b\": null,          \"spatial_relation\": \"left_of\"},\n  \"step_4\": {\"action\": \"open_gripper\", \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\",  \"spatial_relation\": \"left_of\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_cube",
+        "spatial_relation": "left_of"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left_of"
+      },
+      "step_3": {
+        "action": "close_gripper",
+        "object_a": "green_cube",
+        "object_b": null,
+        "spatial_relation": "left_of"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left_of"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 2,
+      "fn": 2,
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "one",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"yellow_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"yellow_block\", \"object_b\": \"green_block\",  \"spatial_relation\": \"above\"},\n  \"step_3\": {\"action\": \"open_gripper\", \"object_a\": \"yellow_block\", \"object_b\": null,  \"spatial_relation\": null},\n  \"step_4\": {\"action\": \"close_gripper\", \"object_a\": \"yellow_block\", \"object_b\": null,  \"spatial_relation\": \"on\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "above"
+      },
+      "step_3": {
+        "action": "open_gripper",
+        "object_a": "yellow_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_4": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": null,
+        "spatial_relation": "on"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 3,
+      "fn": 3,
+      "precision": 0.25,
+      "recall": 0.25,
+      "f1": 0.25
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "one",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"blue_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"push_object\", \"object_a\": \"blue_bowl\", \"object_b\": \"green_bowl\", \"spatial_relation\": \"behind\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "push_object",
+        "object_a": "blue_bowl",
+        "object_b": "green_bowl",
+        "spatial_relation": "behind"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "one",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"green_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"green_bowl\", \"object_b\": \"yellow_block\",  \"spatial_relation\": \"next_to\"},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"green_bowl\", \"object_b\": \"yellow_block\",  \"spatial_relation\": \"next_to\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 2,
+      "precision": 0.6666666666666666,
+      "recall": 0.5,
+      "f1": 0.5714285714285715
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "few",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",  \"object_a\": null,        \"object_b\": \"blue_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"blue_block\", \"object_b\": null,          \"spatial_relation\": null},\n  \"step_3\": {\"action\": \"move_pose\",      \"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\",  \"spatial_relation\": \"in\"},\n  \"step_4\": {\"action\": \"open_gripper\",\"object_a\": \"blue_block\", \"object_b\": \"yellow_bowl\",  \"spatial_relation\": \"inside\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "blue_block",
+        "object_b": null,
+        "spatial_relation": null
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "in"
+      },
+      "step_4": {
+        "action": "open_gripper",
+        "object_a": "blue_block",
+        "object_b": "yellow_bowl",
+        "spatial_relation": "inside"
+      }
+    },
+    "action_metrics": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "few",
+    "instruction": "move the green cube to the left of the blue bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",  \"object_a\": null,        \"object_b\": \"green_cube\",  \"spatial_relation\": \"left_of\"},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"green_cube\", \"object_b\": \"blue_bowl\",  \"spatial_relation\": \"left_of\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_cube",
+        "spatial_relation": "left_of"
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_cube",
+        "object_b": "blue_bowl",
+        "spatial_relation": "left_of"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "few",
+    "instruction": "place the yellow block on top of the green block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"yellow_block\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"close_gripper\",\"object_a\": \"yellow_block\", \"object_b\": \"green_block\", \"spatial_relation\": \"on\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "yellow_block",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "close_gripper",
+        "object_a": "yellow_block",
+        "object_b": "green_block",
+        "spatial_relation": "on"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 2,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "few",
+    "instruction": "push the blue bowl behind the green bowl",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",      \"object_a\": null,        \"object_b\": \"blue_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"green_bowl\", \"object_b\": null, \"spatial_relation\": \"behind\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "blue_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": null,
+        "spatial_relation": "behind"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  {
+    "model": "falcon",
+    "shot": "few",
+    "instruction": "put the green bowl next to the yellow block",
+    "raw_output": "{\n  \"step_1\": {\"action\": \"move_pose\",  \"object_a\": null,        \"object_b\": \"green_bowl\",  \"spatial_relation\": null},\n  \"step_2\": {\"action\": \"move_pose\",      \"object_a\": \"green_bowl\", \"object_b\": \"yellow_block\", \"spatial_relation\": \"next_to\"}\n}",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": null,
+        "object_b": "green_bowl",
+        "spatial_relation": null
+      },
+      "step_2": {
+        "action": "move_pose",
+        "object_a": "green_bowl",
+        "object_b": "yellow_block",
+        "spatial_relation": "next_to"
+      }
+    },
+    "action_metrics": {
+      "tp": 1,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.5,
+      "recall": 0.25,
+      "f1": 0.3333333333333333
+    }
+  }
+]

@@ -1,22 +1,18 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>kinematic_controller</name>
-  <version>0.0.1</version>
-  <description>Kinematic controller for Assignment 4</description>
+  <name>llm_project</name>
+  <version>0.0.0</version>
+  <description>LLM-based task decomposition and ROS 2 action execution for the Gen3 manipulator</description>
   <maintainer email="xyan31@mimi.cs.mcgill.ca">sabrina</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>sensor_msgs</depend>
-  <depend>geometry_msgs</depend>
+  <depend>rclpy</depend>
   <depend>std_msgs</depend>
-  <depend>pinocchio</depend>
-  <depend>eigen3_cmake_module</depend>
-  <depend>Eigen3</depend>
-  <depend>potential_field</depend>
+  <depend>geometry_msgs</depend>
   <depend>highlevel_interfaces</depend>
 
   <test_depend>ament_lint_auto</test_depend>

@@ -3,17 +3,15 @@
 <package format="3">
   <name>keyboard_controller</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="xyan31@mimi.cs.mcgill.ca">xyan31</maintainer>
-  <license>TODO: License declaration</license>
+  <description>Keyboard teleoperation node for manual end-effector velocity control</description>
+  <maintainer email="xyan31@mimi.cs.mcgill.ca">sabrina</maintainer>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <!-- ESTAS SON LAS LINEAS QUE SE TIENEN QUE AGREGAR -->
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
-  <!-- ESTAS SON LAS LINEAS QUE SE TIENEN QUE AGREGAR -->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

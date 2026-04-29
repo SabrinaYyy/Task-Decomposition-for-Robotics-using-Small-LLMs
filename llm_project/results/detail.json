@@ -1,0 +1,36 @@
+[
+  {
+    "model": "llama",
+    "shot": "zero",
+    "instruction": "put the blue block inside the yellow bowl",
+    "raw_output": "I can decompose the instruction into a sequence of robot actions. Here's the step-by-step breakdown:\n\n1. Move the yellow bowl to a position where the blue block can be placed (move_pose).\n2. Open the yellow bowl (open_gripper).\n3. Place the blue block inside the yellow bowl (move_pose, close_gripper).\n\nHere's the JSON object representing the sequence of actions:\n\n```json\n{\n  \"step_1\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"yellow_bowl\",\n    \"object_b\": \"blue_block\",\n    \"spatial_relation\": \"inside\"\n  },\n  \"step_2\": {\n    \"action\": \"open_gripper\",\n    \"object_a\": \"yellow_bowl\",\n    \"object_b\": \"null\",\n    \"spatial_relation\": \"open\"\n  },\n  \"step_3\": {\n    \"action\": \"move_pose\",\n    \"object_a\": \"yellow_bowl\",\n    \"object_b\": \"blue_block\",\n    \"spatial_relation\": \"inside\"\n  }\n}\n```",
+    "parsed_json": {
+      "step_1": {
+        "action": "move_pose",
+        "object_a": "yellow_bowl",
+        "object_b": "blue_block",
+        "spatial_relation": "inside"
+      },
+      "step_2": {
+        "action": "open_gripper",
+        "object_a": "yellow_bowl",
+        "object_b": "null",
+        "spatial_relation": "open"
+      },
+      "step_3": {
+        "action": "move_pose",
+        "object_a": "yellow_bowl",
+        "object_b": "blue_block",
+        "spatial_relation": "inside"
+      }
+    },
+    "action_metrics": {
+      "tp": 2,
+      "fp": 1,
+      "fn": 2,
+      "precision": 0.6666666666666666,
+      "recall": 0.5,
+      "f1": 0.5714285714285715
+    }
+  }
+]

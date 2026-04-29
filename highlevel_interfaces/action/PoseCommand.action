@@ -1,3 +1,4 @@
+# Goal: desired end-effector pose in task space.
 float64 x
 float64 y
 float64 z
@@ -5,9 +6,11 @@ float64 roll
 float64 pitch
 float64 yaw
 ---
+# Result: whether the action finished successfully.
 bool success
 string message
 ---
+# Feedback: progress reported while moving toward the goal pose.
 float64 distance_translation
 float64 distance_orientation
 float64 time_elapsed

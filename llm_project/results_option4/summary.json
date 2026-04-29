@@ -1,0 +1,122 @@
+{
+  "smollm2_zero": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 2.0,
+    "action_fp": 0.4,
+    "action_fn": 1.6,
+    "action_precision": 0.8,
+    "action_recall": 0.6,
+    "action_f1": 0.6666666666666667
+  },
+  "smollm2_one": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 3.4,
+    "action_fp": 0.6,
+    "action_fn": 0.2,
+    "action_precision": 0.85,
+    "action_recall": 0.9,
+    "action_f1": 0.8666666666666668
+  },
+  "smollm2_few": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 2.6,
+    "action_fp": 0.2,
+    "action_fn": 1.0,
+    "action_precision": 0.9,
+    "action_recall": 0.75,
+    "action_f1": 0.8095238095238095
+  },
+  "qwen_zero": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 1.8,
+    "action_fp": 1.6,
+    "action_fn": 1.8,
+    "action_precision": 0.5966666666666666,
+    "action_recall": 0.5,
+    "action_f1": 0.5174603174603176
+  },
+  "qwen_one": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 2.4,
+    "action_fp": 0.4,
+    "action_fn": 1.2,
+    "action_precision": 0.8,
+    "action_recall": 0.7,
+    "action_f1": 0.7333333333333333
+  },
+  "qwen_few": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 2.4,
+    "action_fp": 0.4,
+    "action_fn": 1.2,
+    "action_precision": 0.8,
+    "action_recall": 0.7,
+    "action_f1": 0.7333333333333333
+  },
+  "llama_zero": {
+    "n_tasks": 5,
+    "json_rate": 0.8,
+    "action_tp": 0.8,
+    "action_fp": 2.0,
+    "action_fn": 2.8,
+    "action_precision": 0.2333333333333333,
+    "action_recall": 0.25,
+    "action_f1": 0.23095238095238096
+  },
+  "llama_one": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 3.2,
+    "action_fp": 0.6,
+    "action_fn": 0.4,
+    "action_precision": 0.85,
+    "action_recall": 0.85,
+    "action_f1": 0.8380952380952381
+  },
+  "llama_few": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 2.2,
+    "action_fp": 1.4,
+    "action_fn": 1.4,
+    "action_precision": 0.65,
+    "action_recall": 0.65,
+    "action_f1": 0.6261904761904762
+  },
+  "falcon_zero": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 0.6,
+    "action_fp": 1.4,
+    "action_fn": 3.0,
+    "action_precision": 0.3,
+    "action_recall": 0.25,
+    "action_f1": 0.26666666666666666
+  },
+  "falcon_one": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 1.6,
+    "action_fp": 1.8,
+    "action_fn": 2.0,
+    "action_precision": 0.4833333333333333,
+    "action_recall": 0.45,
+    "action_f1": 0.4642857142857143
+  },
+  "falcon_few": {
+    "n_tasks": 5,
+    "json_rate": 1.0,
+    "action_tp": 2.0,
+    "action_fp": 0.4,
+    "action_fn": 1.6,
+    "action_precision": 0.8,
+    "action_recall": 0.6,
+    "action_f1": 0.6666666666666667
+  }
+}

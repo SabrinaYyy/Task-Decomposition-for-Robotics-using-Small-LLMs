@@ -102,23 +102,26 @@ private:
             return;
         }
         
-        //compute potential field
+        // A4 task-space planner: generate an end-effector velocity command from
+        // the Cartesian attractive field xdot_ref = k_att (x_target - x_feedback).
         Eigen::Vector3d error = target_pos_ - current_pos_;
         Eigen::Vector3d reference_vel = k_att_linear_ * error;
         
-        //saturate velocity
+        // Limit the command magnitude so the planner stays within the requested speed bound.
         double vel_norm = reference_vel.norm();
         if (vel_norm > max_linear_velocity_) {
             reference_vel = reference_vel * (max_linear_velocity_ / vel_norm);
         }
         
-        //check if reached target (within 1mm)
+        // Stop once the end-effector is sufficiently close to the target.
         if (error.norm() < done_threshold_) {
             reference_vel.setZero();
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
                                "Target reached!");
         }
 
+        // Later assignments also consume a reference pose, so we integrate one
+        // time step forward from the current Cartesian state.
         const double dt = 1.0 / publish_rate_;
         const Eigen::Vector3d reference_pos = current_pos_ + dt * reference_vel;
 
@@ -132,7 +135,7 @@ private:
         pose_msg.orientation.z = 0.0;
         pose_pub_->publish(pose_msg);
         
-        //publish reference twist
+        // The A4 kinematic controller consumes this Cartesian velocity reference.
         geometry_msgs::msg::Twist twist_msg;
         twist_msg.linear.x = reference_vel[0];
         twist_msg.linear.y = reference_vel[1];
@@ -144,20 +147,17 @@ private:
         twist_pub_->publish(twist_msg);
     }
     
-    //rosinterfaces
     rclcpp::Service<highlevel_interfaces::srv::Move3d>::SharedPtr service_;
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr pose_sub_;
     rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr pose_pub_;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
     
-    //parameters
     double publish_rate_;
     double k_att_linear_;
     double max_linear_velocity_;
     double done_threshold_;
 
-    //state
     Eigen::Vector3d current_pos_;
     Eigen::Vector3d target_pos_;
     bool first_feedback_received_;

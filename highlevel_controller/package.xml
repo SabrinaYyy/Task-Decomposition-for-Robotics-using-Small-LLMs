@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>High-level launch package for Assignment 6</description>
   <maintainer email="xyan31@mimi.cs.mcgill.ca">sabrina</maintainer>
-  <license>TODO: License declaration</license>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

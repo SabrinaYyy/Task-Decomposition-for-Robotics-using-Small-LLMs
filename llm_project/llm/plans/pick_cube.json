@@ -1,0 +1,14 @@
+{
+  "step_1": {
+    "action": "move_pose",
+    "object_a": "cube",
+    "object_b": null,
+    "spatial_relation": null
+  },
+  "step_2": {
+    "action": "close_gripper",
+    "object_a": "cube",
+    "object_b": null,
+    "spatial_relation": null
+  }
+}

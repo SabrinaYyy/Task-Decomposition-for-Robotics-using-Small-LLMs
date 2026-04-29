@@ -4,7 +4,7 @@
   <name>dynamic_controller</name>
   <version>0.0.1</version>
   <description>Task-space inverse dynamic controller for Assignment 5</description>
-  <maintainer email="you@example.com">Your Name</maintainer>
+  <maintainer email="xyan31@mimi.cs.mcgill.ca">sabrina</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

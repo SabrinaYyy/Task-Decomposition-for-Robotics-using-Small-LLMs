@@ -193,6 +193,8 @@ Eigen::MatrixXd DynamicController::pseudoInverse(const Eigen::MatrixXd & matrix)
 
 void DynamicController::computeKinematicsAndDynamics()
 {
+  // Update the robot model at the current q and qdot so we can compute task-space
+  // feedback and all inverse-dynamics terms from the same state.
   pinocchio::forwardKinematics(model_, data_, joint_pos_, joint_vel_);
   pinocchio::updateFramePlacements(model_, data_);
   pinocchio::computeJointJacobians(model_, data_, joint_pos_);
@@ -251,25 +253,31 @@ void DynamicController::computeAndPublishCommand()
   const Eigen::Vector3d ref_task_acc = Eigen::Vector3d::Zero();
   const Eigen::Vector3d task_pos_error = ref_task_pos_ - fbk_task_pos_;
   const Eigen::Vector3d task_vel_error = ref_task_vel_ - fbk_task_vel_;
+  // Task-space PD law from the slides: xddot_cmd = xddot_ref + D(xdot_ref - xdot) + K(x_ref - x).
   const Eigen::Vector3d xddot_cmd =
     ref_task_acc + linear_d_ * task_vel_error + linear_k_ * task_pos_error;
 
   const Eigen::MatrixXd mass_inv = mass_matrix_.ldlt().solve(
     Eigen::MatrixXd::Identity(dim_joints_, dim_joints_));
+  // Task-space inertia: Lambda = (J M^-1 J^T)^-1.
   const Eigen::Matrix3d lambda_inv = j_linear_ * mass_inv * j_linear_.transpose();
   lambda_ = pseudoInverse(lambda_inv);
 
   const Eigen::MatrixXd j_bar = mass_inv * j_linear_.transpose() * lambda_;
   const Eigen::Vector3d jdot_qdot = jdot_linear_ * joint_vel_;
+  // eta collects nonlinear dynamics and the Jdot*qdot correction term.
   const Eigen::Vector3d eta = j_bar.transpose() * nonlinear_effects_ - lambda_ * jdot_qdot;
   const Eigen::Vector3d wrench_cmd = lambda_ * xddot_cmd + eta;
 
+  // Map the commanded task-space wrench back to joint torques.
   Eigen::VectorXd tau_cmd = j_linear_.transpose() * wrench_cmd;
 
   if (with_redundancy_ && first_joint_pos_ref_received_ && first_joint_vel_ref_received_) {
+    // Null-space joint PD objective used only in the redundant version.
     const Eigen::VectorXd qddot_null_cmd =
       joint_d_ * (ref_joint_vel_ - joint_vel_) + joint_k_ * (ref_joint_pos_ - joint_pos_);
     const Eigen::VectorXd tau_joint = mass_matrix_ * qddot_null_cmd + nonlinear_effects_;
+    // Dynamically consistent projector so null-space torques do not affect the 3D task.
     nullspace_projection_ =
       Eigen::MatrixXd::Identity(dim_joints_, dim_joints_) -
       j_linear_.transpose() * lambda_ * j_linear_ * mass_inv;
