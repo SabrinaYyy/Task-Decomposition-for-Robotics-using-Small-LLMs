@@ -215,10 +215,3 @@ Gripper action:
 control_msgs/action/ParallelGripperCommand
 ```
 
-## Reflection On The Demo
-
-During the demo, I did not explain the system as well as I should have. Near the end of the semester I was balancing multiple final projects, assignments from three courses, and a final exam on the first day of the exam period. Because of that, I focused more on reviewing the course concepts than on carefully reviewing my own implementation before the demo.
-
-After revisiting the project, I can see that the demo result was mainly a result of my time management and preparation, not a lack of course material. The lectures, assignments, and project instructions provided the content needed to understand and complete the pipeline. I should have spent more time making sure I could explain each part of my code clearly, especially the ROS action flow, the controller setup, and the JSON-to-action executor.
-
-This README and the comments in the code are my attempt to make the final version easier to understand and reproduce.
